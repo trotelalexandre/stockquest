@@ -65,82 +65,204 @@
   }
 }
 
-:root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 215 25% 27%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 27%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
+
+    --primary: 142 55% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 42 90% 55%;
+    --secondary-foreground: 215 25% 27%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 210 20% 96%;
+    --accent-foreground: 215 25% 27%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 215 25% 27%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 215 25% 27%;
+    --foreground: 210 20% 98%;
+
+    --card: 215 25% 27%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 215 25% 27%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 142 55% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 42 90% 55%;
+    --secondary-foreground: 215 25% 27%;
+
+    --muted: 215 25% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 215 25% 20%;
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 215 25% 20%;
+    --input: 215 25% 20%;
+    --ring: 210 20% 98%;
+  }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
+}
+
+.game-card {
+  @apply rounded-xl border-2 border-gray-200 bg-white shadow-md transition-all duration-200 hover:shadow-lg;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4caf50, #8bc34a);
+  opacity: 0.8;
+}
+
+.game-button {
+  @apply transform rounded-xl px-6 py-3 font-bold transition-all duration-200;
+  position: relative;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(0);
+}
+
+.game-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.game-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.game-button-primary {
+  background: linear-gradient(180deg, #4caf50 0%, #388e3c 100%);
+  @apply border-b-2 border-[#2E7D32] text-white;
+}
+
+.game-button-primary:hover {
+  background: linear-gradient(180deg, #5cb860 0%, #4caf50 100%);
+}
+
+.game-button-secondary {
+  background: linear-gradient(180deg, #ffc107 0%, #ffa000 100%);
+  @apply border-b-2 border-[#FF8F00] text-gray-800;
+}
+
+.game-button-secondary:hover {
+  background: linear-gradient(180deg, #ffd54f 0%, #ffc107 100%);
+}
+
+.game-button-blue {
+  background: linear-gradient(180deg, #2196f3 0%, #1976d2 100%);
+  @apply border-b-2 border-[#0D47A1] text-white;
+}
+
+.game-button-blue:hover {
+  background: linear-gradient(180deg, #42a5f5 0%, #2196f3 100%);
+}
+
+.game-input {
+  @apply focus:ring-opacity-50 rounded-xl border-2 border-gray-200 p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-500;
+}
+
+.confetti {
+  @apply animate-confetti absolute h-5 w-1.5;
+}
+
+.game-badge {
+  @apply inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-semibold transition-all;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.game-progress-bar {
+  @apply h-2.5 overflow-hidden rounded-full bg-gray-200;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.game-progress-fill {
+  @apply h-full rounded-full transition-all duration-500 ease-out;
+  background-size: 30px 30px;
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  animation: progress-animation 1s linear infinite;
+}
+
+@keyframes progress-animation {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 30px 0;
+  }
+}
+
+.game-tab {
+  @apply rounded-lg px-4 py-2 text-sm font-medium transition-all;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.game-tab-active {
+  @apply bg-white text-gray-800 shadow-md;
+  box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.game-tab-inactive {
+  @apply text-gray-600 hover:bg-white/50;
+}
+
+.game-stat-card {
+  @apply rounded-lg border border-gray-100 bg-white p-4 text-center shadow-sm;
 }
