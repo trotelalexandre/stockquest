@@ -1,11 +1,13 @@
+import tailwindcssAnimate from "tailwindcss-animate";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./pages/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
@@ -51,16 +53,16 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Updated gamified color palette
+        // gamified colors
         game: {
-          primary: "#4CAF50", // Brighter green
-          secondary: "#FFC107", // Brighter gold
-          accent: "#F44336", // Brighter red
-          purple: "#673AB7", // Brighter purple
-          blue: "#2196F3", // Brighter blue
-          light: "#F5F7FA", // Light background
-          dark: "#263238", // Dark text
-          gray: "#78909C", // Medium gray
+          primary: "#4CAF50",
+          secondary: "#FFC107",
+          accent: "#F44336",
+          purple: "#673AB7",
+          blue: "#2196F3",
+          light: "#F5F7FA",
+          dark: "#263238",
+          gray: "#78909C",
         },
       },
       borderRadius: {
@@ -119,5 +121,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 };
