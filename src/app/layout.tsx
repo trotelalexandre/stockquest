@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { PortfolioProvider } from "@/providers/portfolio-provider";
+import Navbar from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PortfolioProvider>{children}</PortfolioProvider>
+          <PortfolioProvider>
+            <Navbar />
+            {children}
+          </PortfolioProvider>
         </ThemeProvider>
       </body>
     </html>
