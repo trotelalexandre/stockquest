@@ -23,7 +23,7 @@ export default function BacktestDialog({
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
-  // Simulate loading
+  // simulate loading
   useEffect(() => {
     if (open) {
       const interval = setInterval(() => {
@@ -44,7 +44,7 @@ export default function BacktestDialog({
       return () => clearInterval(interval);
     }
 
-    // Reset when dialog closes
+    // reset when dialog closes
     if (!open) {
       setProgress(0);
     }

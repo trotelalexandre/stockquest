@@ -20,12 +20,14 @@ import {
   Info,
   AlertCircle,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import PortfolioChart from "./portfolio-chart";
-import WeightSlider from "./weight-slider";
 import BacktestDialog from "./backtest-dialog";
-import Confetti from "@/components/confetti";
 import Badge from "@/components/badge";
+import { useXP } from "@/providers/xp-provider";
+import { useConfetti } from "@/providers/confetti-provider";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 export default function PortfolioSection() {
   const {
@@ -35,49 +37,52 @@ export default function PortfolioSection() {
     updateWeight,
     savePortfolio,
     unsavePortfolio,
+    applyEqualAllocation,
     runBacktest,
   } = usePortfolio();
 
   const [weights, setWeights] = useState<Record<string, number>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [backtestOpen, setBacktestOpen] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [xpEarned, setXpEarned] = useState(0);
-  const [showXpAnimation, setShowXpAnimation] = useState(false);
 
-  // Initialize weights from portfolio
-  useEffect(() => {
-    const initialWeights: Record<string, number> = {};
+  const { awardXP } = useXP();
+  const { setShowConfetti } = useConfetti();
+
+  const handleWeightChange = useCallback(
+    (ticker: string, value: number) => {
+      // update local state
+      setWeights((prev) => ({ ...prev, [ticker]: value }));
+
+      // update context
+      updateWeight(ticker, value);
+    },
+    [updateWeight],
+  );
+
+  const handleEqualAllocation = useCallback(() => {
+    const totalStocks = portfolio.length;
+    const equalWeight = 100 / totalStocks;
+
+    const equalWeights: Record<string, number> = {};
     portfolio.forEach((stock) => {
-      initialWeights[stock.ticker] = stock.weight;
+      equalWeights[stock.ticker] = equalWeight;
     });
-    setWeights(initialWeights);
-  }, [portfolio]);
 
-  const handleWeightChange = (ticker: string, value: number) => {
-    // Update local state
-    setWeights((prev) => ({ ...prev, [ticker]: value }));
+    // update local state and context
+    setWeights(equalWeights);
 
-    // Update context
-    updateWeight(ticker, value);
-
-    // Award XP for adjusting weights if it's a significant change
-    const currentWeight =
-      portfolio.find((s) => s.ticker === ticker)?.weight || 0;
-    if (Math.abs(currentWeight - value) > 5 && !showXpAnimation) {
-      awardXP(5);
-    }
-  };
+    applyEqualAllocation();
+  }, [portfolio, applyEqualAllocation]);
 
   const handleSavePortfolio = () => {
     setIsSaving(true);
 
-    // Simulate API call
+    // simulate API call
     setTimeout(() => {
       savePortfolio();
       setIsSaving(false);
 
-      // Show confetti and award XP
+      // show confetti and award XP
       setShowConfetti(true);
       awardXP(50);
     }, 1000);
@@ -95,18 +100,11 @@ export default function PortfolioSection() {
     awardXP(25);
   };
 
-  const awardXP = (amount: number) => {
-    setXpEarned(amount);
-    setShowXpAnimation(true);
-
-    setTimeout(() => {
-      setShowXpAnimation(false);
-    }, 2000);
-  };
-
-  const totalWeight = portfolio.reduce((sum, stock) => sum + stock.weight, 0);
-  const isValidPortfolio =
-    Math.abs(totalWeight - 100) < 0.01 && portfolio.length > 0;
+  const totalWeight = useMemo(
+    () => portfolio.reduce((sum, stock) => sum + stock.weight, 0),
+    [portfolio],
+  );
+  const isValidPortfolio = useMemo(() => totalWeight === 100, [totalWeight]);
 
   // calculate portfolio diversity score (0-100)
   const diversityScore =
@@ -115,21 +113,13 @@ export default function PortfolioSection() {
       : 0;
 
   return (
-    <div className="relative mb-8 overflow-hidden p-6">
-      {showConfetti && <Confetti />}
-
-      {showXpAnimation && (
-        <div className="from-game-blue absolute top-4 right-4 animate-bounce rounded-lg border-b-2 border-[#0D47A1] bg-gradient-to-b to-[#1976D2] px-3 py-1 font-semibold text-white shadow-sm">
-          +{xpEarned} XP
-        </div>
-      )}
-
+    <div className="overflow-hidden py-2">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold">Portfolio</h2>
+          <h1 className="text-2xl font-bold">Portfolio</h1>
           <Badge label="Level 2" color="blue" />
         </div>
-        <div className="flex gap-2">
+        <div className="hidden gap-2 md:flex">
           <Button
             onClick={handleBacktest}
             disabled={!isValidPortfolio}
@@ -142,7 +132,7 @@ export default function PortfolioSection() {
           {isSaved ? (
             <Button
               onClick={handleUnsavePortfolio}
-              className="game-button border-b-2 border-gray-400 bg-gradient-to-b from-gray-200 to-gray-300 text-gray-700"
+              className="game-button game-button-gray"
             >
               <BookmarkX className="mr-2 h-4 w-4" />
               Unsave
@@ -183,7 +173,7 @@ export default function PortfolioSection() {
         <>
           <div className="mb-6 grid gap-4">
             <div className="flex flex-col justify-between gap-4 sm:flex-row">
-              <div className="game-card flex-1 p-4">
+              <div className="game-card flex flex-col p-4 md:flex-1">
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="font-semibold text-gray-700">
                     Portfolio Weight
@@ -196,13 +186,12 @@ export default function PortfolioSection() {
                 </div>
                 <div className="game-progress-bar">
                   <div
-                    className="game-progress-fill"
+                    className={cn("game-progress-fill", {
+                      "bg-game-primary": Math.abs(totalWeight - 100) < 0.01,
+                      "bg-game-accent": Math.abs(totalWeight - 100) >= 0.01,
+                    })}
                     style={{
                       width: `${Math.min(totalWeight, 100)}%`,
-                      background:
-                        Math.abs(totalWeight - 100) < 0.01
-                          ? "linear-gradient(90deg, #4CAF50, #8BC34A)"
-                          : "linear-gradient(90deg, #F44336, #FF5722)",
                     }}
                   />
                 </div>
@@ -221,7 +210,7 @@ export default function PortfolioSection() {
                 )}
               </div>
 
-              <div className="game-card flex-1 p-4">
+              <div className="game-card flex flex-col p-4 md:flex-1">
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="font-semibold text-gray-700">
                     Diversity Score
@@ -232,10 +221,9 @@ export default function PortfolioSection() {
                 </div>
                 <div className="game-progress-bar">
                   <div
-                    className="game-progress-fill"
+                    className="game-progress-fill bg-game-blue"
                     style={{
                       width: `${diversityScore}%`,
-                      background: "linear-gradient(90deg, #2196F3, #03A9F4)",
                     }}
                   />
                 </div>
@@ -248,7 +236,7 @@ export default function PortfolioSection() {
                 </div>
               </div>
 
-              <div className="game-card flex-1 p-4">
+              <div className="game-card flex flex-col p-4 md:flex-1">
                 <div className="mb-2 flex items-center justify-between">
                   <h3 className="font-semibold text-gray-700">Challenges</h3>
                   <span className="text-game-purple font-semibold">1/3</span>
@@ -290,45 +278,68 @@ export default function PortfolioSection() {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="flex items-center gap-2 font-semibold text-gray-700">
-                <Award className="text-game-secondary h-4 w-4" />
-                Adjust Weights
-              </h3>
-              <p className="mb-4 text-sm text-gray-500">
-                Drag the sliders to adjust the weight of each stock in your
-                portfolio. The total weight should equal 100%.
-              </p>
-
-              {portfolio.map((stock) => (
-                <div
-                  key={stock.ticker}
-                  className="game-card flex items-center gap-3 p-3"
-                >
-                  <div className="min-w-[120px]">
-                    <div className="font-semibold text-gray-800">
-                      {stock.ticker}
-                    </div>
-                    <div className="text-xs text-gray-500">{stock.name}</div>
-                  </div>
-
-                  <WeightSlider
-                    value={weights[stock.ticker] || stock.weight}
-                    onChange={(value) =>
-                      handleWeightChange(stock.ticker, value)
-                    }
-                  />
-
+            <div className="game-card space-y-8 p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="flex items-center gap-2 font-semibold text-gray-700">
+                    <Award className="text-game-secondary h-4 w-4" />
+                    Adjust Weights
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    Adjust the weights of each stock.
+                  </p>
+                </div>
+                <div className="flex gap-2">
                   <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeFromPortfolio(stock.ticker)}
-                    className="hover:text-game-accent hover:bg-game-accent/10 ml-1 rounded-lg text-gray-400"
+                    onClick={() => handleEqualAllocation()}
+                    className="game-button game-button-primary"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    Equal Allocation
                   </Button>
                 </div>
-              ))}
+              </div>
+
+              <div className="space-y-4">
+                {portfolio.map((stock) => (
+                  <div
+                    key={stock.ticker}
+                    className="flex w-full items-center justify-between gap-4"
+                  >
+                    <div className="min-w-[120px]">
+                      <div className="font-semibold text-gray-800">
+                        {stock.ticker}
+                      </div>
+                      <div className="text-xs text-gray-500">{stock.name}</div>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <Input
+                          type="number"
+                          className="game-input w-16"
+                          value={weights[stock.ticker] ?? stock.weight ?? ""}
+                          onChange={(e) =>
+                            handleWeightChange(
+                              stock.ticker,
+                              parseFloat(e.target.value) ?? undefined,
+                            )
+                          }
+                        />
+                        <span>%</span>
+                      </div>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="cursor-pointer"
+                        onClick={() => removeFromPortfolio(stock.ticker)}
+                      >
+                        <Trash2 className="h-4 w-4 text-gray-400 hover:text-red-500" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -398,6 +409,42 @@ export default function PortfolioSection() {
           </div>
         </>
       )}
+
+      <div className="mt-6 grid w-full grid-cols-2 gap-4 md:hidden">
+        <Button
+          onClick={handleBacktest}
+          disabled={!isValidPortfolio}
+          className="game-button game-button-secondary"
+        >
+          <Trophy className="mr-2 h-4 w-4" />
+          Backtest
+        </Button>
+
+        {isSaved ? (
+          <Button
+            onClick={handleUnsavePortfolio}
+            className="game-button game-button-gray"
+          >
+            <BookmarkX className="mr-2 h-4 w-4" />
+            Unsave
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSavePortfolio}
+            disabled={isSaving || !isValidPortfolio}
+            className="game-button game-button-primary"
+          >
+            {isSaving ? (
+              <span className="animate-pulse">Saving...</span>
+            ) : (
+              <>
+                <Check className="mr-2 h-4 w-4" />
+                Save Portfolio
+              </>
+            )}
+          </Button>
+        )}
+      </div>
 
       <BacktestDialog open={backtestOpen} onOpenChange={setBacktestOpen} />
     </div>

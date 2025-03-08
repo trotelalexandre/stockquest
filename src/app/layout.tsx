@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { PortfolioProvider } from "@/providers/portfolio-provider";
 import Navbar from "@/components/navbar";
+import XPProvider from "@/providers/xp-provider";
+import ConfettiProvider from "@/providers/confetti-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,8 +31,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <PortfolioProvider>
-            <Navbar />
-            {children}
+            <XPProvider>
+              <ConfettiProvider>
+                <Navbar />
+                {children}
+              </ConfettiProvider>
+            </XPProvider>
           </PortfolioProvider>
         </ThemeProvider>
       </body>

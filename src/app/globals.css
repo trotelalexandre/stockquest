@@ -228,6 +228,17 @@
   display: none;
 }
 
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 /* Refined gamified UI styles with 3D effects */
 .game-card {
   @apply rounded-xl border-2 border-gray-200 bg-white shadow-md transition-all duration-200 hover:shadow-lg;
@@ -279,6 +290,15 @@
 
 .game-button-blue:hover {
   background: linear-gradient(180deg, #42a5f5 0%, #2196f3 100%);
+}
+
+.game-button-gray {
+  background: linear-gradient(180deg, #78909c 0%, #546e7a 100%);
+  @apply border-b-2 border-[#455A64] text-white;
+}
+
+.game-button-gray:hover {
+  background: linear-gradient(180deg, #90a4ae 0%, #78909c 100%);
 }
 
 .game-input {

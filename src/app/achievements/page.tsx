@@ -177,7 +177,12 @@ export default function AchievementsPage() {
             color="primary"
             size="lg"
           />
-          <Badge label={`${earnedXP} XP Earned`} color="blue" size="lg" />
+          <Badge
+            label={`${earnedXP} XP Earned`}
+            color="blue"
+            size="lg"
+            className="!hidden md:!block"
+          />
         </div>
       </div>
 
@@ -185,13 +190,11 @@ export default function AchievementsPage() {
       <div className="game-card mb-8 p-6">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="bg-game-primary/10 flex h-12 w-12 items-center justify-center rounded-full">
+            <div className="bg-game-primary/10 hidden h-12 w-12 items-center justify-center rounded-full md:flex">
               <Trophy className="text-game-primary h-6 w-6" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">
-                Achievement Progress
-              </h2>
+              <h2 className="text-xl font-bold text-gray-800">Progress</h2>
               <p className="text-sm text-gray-500">
                 Keep going to unlock all achievements!
               </p>
@@ -213,19 +216,19 @@ export default function AchievementsPage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="game-stat-card">
+          <div className="bg-game-light flex flex-col items-center justify-center rounded-lg p-4">
             <div className="text-game-primary text-3xl font-bold">
               {completedAchievements}
             </div>
             <div className="text-sm text-gray-500">Achievements Completed</div>
           </div>
 
-          <div className="game-stat-card">
+          <div className="bg-game-light flex flex-col items-center justify-center rounded-lg p-4">
             <div className="text-game-blue text-3xl font-bold">{earnedXP}</div>
             <div className="text-sm text-gray-500">XP Earned</div>
           </div>
 
-          <div className="game-stat-card">
+          <div className="bg-game-light flex flex-col items-center justify-center rounded-lg p-4">
             <div className="text-game-secondary text-3xl font-bold">
               +{potentialXP}
             </div>

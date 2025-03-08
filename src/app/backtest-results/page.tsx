@@ -50,8 +50,8 @@ export default function BacktestResults() {
         <h1 className="text-2xl font-bold">Results</h1>
       </div>
 
-      <div className="grid gap-6">
-        <Card>
+      <div className="grid gap-8">
+        <Card className="game-card">
           <CardHeader>
             <CardTitle>Portfolio Performance</CardTitle>
             <CardDescription>
@@ -88,7 +88,7 @@ export default function BacktestResults() {
         </Card>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <Card>
+          <Card className="game-card">
             <CardHeader>
               <CardTitle>Total Return</CardTitle>
             </CardHeader>
@@ -100,7 +100,7 @@ export default function BacktestResults() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="game-card">
             <CardHeader>
               <CardTitle>Sharpe Ratio</CardTitle>
             </CardHeader>
@@ -110,7 +110,7 @@ export default function BacktestResults() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="game-card">
             <CardHeader>
               <CardTitle>Max Drawdown</CardTitle>
             </CardHeader>
@@ -121,64 +121,59 @@ export default function BacktestResults() {
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Monthly Returns (%)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="p-2 text-left font-medium">Month</th>
-                    <th className="p-2 text-right font-medium">Portfolio</th>
-                    <th className="p-2 text-right font-medium">S&P 500</th>
-                    <th className="p-2 text-right font-medium">Difference</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {portfolioData.map((data, index) => {
-                    const prevData =
-                      index > 0 ? portfolioData[index - 1] : data;
-                    const portfolioReturn =
-                      ((data.portfolio - prevData.portfolio) /
-                        prevData.portfolio) *
-                      100;
-                    const benchmarkReturn =
-                      ((data.benchmark - prevData.benchmark) /
-                        prevData.benchmark) *
-                      100;
-                    const difference = portfolioReturn - benchmarkReturn;
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-bold">Monthly Returns</h2>
+          <div className="game-card overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="p-2 text-left font-medium">Month</th>
+                  <th className="p-2 text-right font-medium">Portfolio</th>
+                  <th className="p-2 text-right font-medium">S&P 500</th>
+                  <th className="p-2 text-right font-medium">Difference</th>
+                </tr>
+              </thead>
+              <tbody>
+                {portfolioData.map((data, index) => {
+                  const prevData = index > 0 ? portfolioData[index - 1] : data;
+                  const portfolioReturn =
+                    ((data.portfolio - prevData.portfolio) /
+                      prevData.portfolio) *
+                    100;
+                  const benchmarkReturn =
+                    ((data.benchmark - prevData.benchmark) /
+                      prevData.benchmark) *
+                    100;
+                  const difference = portfolioReturn - benchmarkReturn;
 
-                    return index > 0 ? (
-                      <tr key={data.date} className="border-b">
-                        <td className="p-2">{data.date}</td>
-                        <td
-                          className={`p-2 text-right ${portfolioReturn >= 0 ? "text-green-500" : "text-red-500"}`}
-                        >
-                          {portfolioReturn >= 0 ? "+" : ""}
-                          {portfolioReturn.toFixed(2)}%
-                        </td>
-                        <td
-                          className={`p-2 text-right ${benchmarkReturn >= 0 ? "text-green-500" : "text-red-500"}`}
-                        >
-                          {benchmarkReturn >= 0 ? "+" : ""}
-                          {benchmarkReturn.toFixed(2)}%
-                        </td>
-                        <td
-                          className={`p-2 text-right ${difference >= 0 ? "text-green-500" : "text-red-500"}`}
-                        >
-                          {difference >= 0 ? "+" : ""}
-                          {difference.toFixed(2)}%
-                        </td>
-                      </tr>
-                    ) : null;
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+                  return index > 0 ? (
+                    <tr key={data.date} className="border-b">
+                      <td className="p-2">{data.date}</td>
+                      <td
+                        className={`p-2 text-right ${portfolioReturn >= 0 ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {portfolioReturn >= 0 ? "+" : ""}
+                        {portfolioReturn.toFixed(2)}%
+                      </td>
+                      <td
+                        className={`p-2 text-right ${benchmarkReturn >= 0 ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {benchmarkReturn >= 0 ? "+" : ""}
+                        {benchmarkReturn.toFixed(2)}%
+                      </td>
+                      <td
+                        className={`p-2 text-right ${difference >= 0 ? "text-green-500" : "text-red-500"}`}
+                      >
+                        {difference >= 0 ? "+" : ""}
+                        {difference.toFixed(2)}%
+                      </td>
+                    </tr>
+                  ) : null;
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </main>
   );

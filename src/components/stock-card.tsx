@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, Check, TrendingUp, TrendingDown } from "lucide-react";
 import { usePortfolio } from "@/providers/portfolio-provider";
 import Image from "next/image";
-import Badge from "./badge";
 
 interface StockCardProps {
   stock: Stock;
@@ -35,9 +34,6 @@ export default function StockCard({ stock }: StockCardProps) {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold text-gray-800">{stock.name}</h3>
-                {Math.random() > 0.7 && (
-                  <Badge label="Popular" color="secondary" size="sm" />
-                )}
               </div>
               <p className="text-xs text-gray-500">{stock.ticker}</p>
             </div>

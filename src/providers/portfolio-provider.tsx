@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Stock } from "@/lib/types";
 
 interface PortfolioContextType {
@@ -12,77 +18,99 @@ interface PortfolioContextType {
   savePortfolio: () => void;
   unsavePortfolio: () => void;
   runBacktest: () => void;
+  applyEqualAllocation: () => void;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(
   undefined,
 );
 
-export function PortfolioProvider({ children }: { children: ReactNode }) {
+interface PortfolioProviderProps {
+  children: ReactNode;
+}
+
+export function PortfolioProvider({ children }: PortfolioProviderProps) {
   const [portfolio, setPortfolio] = useState<(Stock & { weight: number })[]>(
     [],
   );
   const [isSaved, setIsSaved] = useState(false);
 
-  const addToPortfolio = (stock: Stock) => {
-    if (portfolio.some((item) => item.ticker === stock.ticker)) {
-      return;
-    }
+  const addToPortfolio = useCallback(
+    (stock: Stock) => {
+      if (portfolio.some((item) => item.ticker === stock.ticker)) {
+        return;
+      }
 
-    setPortfolio([...portfolio, { ...stock, weight: 0 }]);
+      setPortfolio([...portfolio, { ...stock, weight: 0 }]);
 
-    if (isSaved) {
-      setIsSaved(false);
-    }
-  };
+      if (isSaved) {
+        setIsSaved(false);
+      }
+    },
+    [portfolio, isSaved],
+  );
 
-  const removeFromPortfolio = (ticker: string) => {
-    setPortfolio(portfolio.filter((stock) => stock.ticker !== ticker));
+  const removeFromPortfolio = useCallback(
+    (ticker: string) => {
+      setPortfolio(portfolio.filter((stock) => stock.ticker !== ticker));
 
-    if (isSaved) {
-      setIsSaved(false);
-    }
-  };
+      if (isSaved) {
+        setIsSaved(false);
+      }
+    },
+    [portfolio, isSaved],
+  );
 
-  const updateWeight = (ticker: string, weight: number) => {
-    setPortfolio(
-      portfolio.map((stock) =>
-        stock.ticker === ticker ? { ...stock, weight } : stock,
-      ),
+  const applyEqualAllocation = useCallback(() => {
+    const equalWeight = 100 / portfolio.length;
+    setPortfolio((prev) =>
+      prev.map((stock) => ({ ...stock, weight: equalWeight })),
     );
+  }, [portfolio]);
 
-    if (isSaved) {
-      setIsSaved(false);
-    }
-  };
+  const updateWeight = useCallback(
+    (ticker: string, weight: number) => {
+      setPortfolio((prev) =>
+        prev.map((stock) =>
+          stock.ticker === ticker ? { ...stock, weight } : stock,
+        ),
+      );
 
-  const savePortfolio = () => {
+      if (isSaved) {
+        setIsSaved(false);
+      }
+    },
+    [isSaved],
+  );
+
+  const savePortfolio = useCallback(() => {
     // TODO: Save the portfolio to the user's account
     setIsSaved(true);
-  };
+  }, []);
 
-  const unsavePortfolio = () => {
+  const unsavePortfolio = useCallback(() => {
     // TODO: Unsave the portfolio to the user's account
     setIsSaved(false);
-  };
+  }, []);
 
-  const runBacktest = () => {
+  const runBacktest = useCallback(() => {
     // TODO: Run a backtest on the portfolio
+  }, []);
+
+  const value = {
+    portfolio,
+    isSaved,
+    addToPortfolio,
+    removeFromPortfolio,
+    updateWeight,
+    savePortfolio,
+    unsavePortfolio,
+    runBacktest,
+    applyEqualAllocation,
   };
 
   return (
-    <PortfolioContext.Provider
-      value={{
-        portfolio,
-        isSaved,
-        addToPortfolio,
-        removeFromPortfolio,
-        updateWeight,
-        savePortfolio,
-        unsavePortfolio,
-        runBacktest,
-      }}
-    >
+    <PortfolioContext.Provider value={value}>
       {children}
     </PortfolioContext.Provider>
   );

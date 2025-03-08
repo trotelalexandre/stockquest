@@ -14,7 +14,7 @@ export default function StockDiscoverySection() {
 
       <Tabs defaultValue="new">
         <div className="hide-scrollbar overflow-x-auto">
-          <TabsList className="mb-6 inline-flex h-12 gap-2">
+          <TabsList className="mb-6 inline-flex h-10 gap-2">
             {stockSections.map((section) => (
               <TabsTrigger
                 key={section.category}
@@ -45,7 +45,7 @@ export default function StockDiscoverySection() {
             value={section.category}
             className="mt-0"
           >
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {section.stocks.map((stock) => (
                 <StockCard key={stock.id} stock={stock} />
               ))}
