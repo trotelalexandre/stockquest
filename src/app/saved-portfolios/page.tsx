@@ -19,11 +19,11 @@ export default function SavedPortfolios() {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-2xl font-bold">Saved Portfolios</h1>
+      <h1 className="mb-6 text-2xl font-bold">Saved Portfolios</h1>
 
       <div className="grid gap-6 md:grid-cols-3">
         {savedPortfolios.map((portfolio) => (
-          <Card key={portfolio.id}>
+          <Card key={portfolio.id} className="game-card">
             <CardHeader>
               <CardTitle>{portfolio.name}</CardTitle>
               <CardDescription>
@@ -31,9 +31,9 @@ export default function SavedPortfolios() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">{portfolio.stocks} stocks</p>
-              <Button asChild>
-                <Link href="/">
+              <p className="mb-4 font-semibold">{portfolio.stocks} stocks</p>
+              <Button className="game-button game-button-primary" asChild>
+                <Link href={`/portfolio/${portfolio.id}`}>
                   View Portfolio <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

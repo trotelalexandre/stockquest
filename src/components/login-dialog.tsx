@@ -52,10 +52,10 @@ export default function LoginDialog({
               <TrendingUp className="h-6 w-6 text-white" />
             </div>
           </div>
-          <DialogTitle className="text-xl font-bold text-gray-800">
+          <DialogTitle className="text-center text-xl font-bold text-gray-800">
             Welcome to StockQuest
           </DialogTitle>
-          <DialogDescription className="text-gray-500">
+          <DialogDescription className="text-center text-gray-500">
             Login to track your progress and earn rewards
           </DialogDescription>
         </DialogHeader>
@@ -84,6 +84,7 @@ export default function LoginDialog({
               id="password"
               type="password"
               value={password}
+              placeholder="•••••••••••••••"
               onChange={(e) => setPassword(e.target.value)}
               required
               className="game-input"

@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import Badge from "./badge";
+import Badge from "@/components/badge";
 
 interface BacktestDialogProps {
   open: boolean;

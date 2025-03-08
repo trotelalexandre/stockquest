@@ -24,8 +24,8 @@ import { useState, useEffect } from "react";
 import PortfolioChart from "./portfolio-chart";
 import WeightSlider from "./weight-slider";
 import BacktestDialog from "./backtest-dialog";
-import Confetti from "./confetti";
-import Badge from "./badge";
+import Confetti from "@/components/confetti";
+import Badge from "@/components/badge";
 
 export default function PortfolioSection() {
   const {
@@ -115,7 +115,7 @@ export default function PortfolioSection() {
       : 0;
 
   return (
-    <div className="game-card relative mb-8 overflow-hidden p-6">
+    <div className="relative mb-8 overflow-hidden p-6">
       {showConfetti && <Confetti />}
 
       {showXpAnimation && (
@@ -126,7 +126,7 @@ export default function PortfolioSection() {
 
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold">Portfolio Builder</h2>
+          <h2 className="text-xl font-bold">Portfolio</h2>
           <Badge label="Level 2" color="blue" />
         </div>
         <div className="flex gap-2">
@@ -168,7 +168,7 @@ export default function PortfolioSection() {
 
       {portfolio.length === 0 ? (
         <div className="flex flex-col items-center gap-4 py-12 text-center">
-          <div className="bg-game-light mb-2 flex h-16 w-16 items-center justify-center rounded-full">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-transparent">
             <Info className="text-game-blue h-8 w-8" />
           </div>
           <p className="text-lg font-medium text-gray-700">
@@ -178,12 +178,6 @@ export default function PortfolioSection() {
             Add stocks from the discovery section below to start building your
             portfolio.
           </p>
-          <div className="bg-game-light mt-2 flex max-w-md items-center gap-2 rounded-lg p-3 text-gray-700">
-            <span className="text-sm">
-              Tip: Add at least 5 different stocks for a well-diversified
-              portfolio
-            </span>
-          </div>
         </div>
       ) : (
         <>
