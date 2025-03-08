@@ -23,13 +23,13 @@ export default function PortfolioChart() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // filter out stocks with zero weight
-  const filteredPortfolio = portfolio.filter((stock) => stock.weight > 0);
+  const filteredPortfolio = portfolio?.filter((stock) => stock.weight > 0);
 
   useEffect(() => {
     if (
       !canvasRef.current ||
       !containerRef.current ||
-      filteredPortfolio.length === 0
+      filteredPortfolio?.length === 0
     )
       return;
 
@@ -64,7 +64,7 @@ export default function PortfolioChart() {
 
     // draw the pie chart
     let startAngle = 0;
-    filteredPortfolio.forEach((stock, index) => {
+    filteredPortfolio?.forEach((stock, index) => {
       const sliceAngle = (stock.weight / 100) * 2 * Math.PI;
 
       ctx.beginPath();
@@ -118,10 +118,10 @@ export default function PortfolioChart() {
 
     // draw legend
     const legendX = 10;
-    let legendY = size - filteredPortfolio.length * 18 - 10;
+    let legendY = size - (filteredPortfolio?.length ?? 0) * 18 - 10;
 
     ctx.font = "10px sans-serif";
-    filteredPortfolio.forEach((stock, index) => {
+    filteredPortfolio?.forEach((stock, index) => {
       const color = COLORS[index % COLORS.length];
 
       // draw color box
