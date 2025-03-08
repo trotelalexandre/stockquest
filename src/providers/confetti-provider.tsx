@@ -6,6 +6,7 @@ import { createContext, useContext, useState } from "react";
 interface ConfettiContextType {
   showConfetti: boolean;
   setShowConfetti: (show: boolean) => void;
+  handleSetShowConfetti: (show: boolean) => void;
 }
 
 const ConfettiContext = createContext<ConfettiContextType | undefined>(
@@ -18,13 +19,21 @@ interface ConfettiProviderProps {
 
 export default function ConfettiProvider({ children }: ConfettiProviderProps) {
   const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiKey, setConfettiKey] = useState(0);
 
-  const value = { showConfetti, setShowConfetti };
+  const handleSetShowConfetti = (show: boolean) => {
+    setShowConfetti(show);
+    if (show) {
+      setConfettiKey((prevKey) => prevKey + 1);
+    }
+  };
+
+  const value = { showConfetti, setShowConfetti, handleSetShowConfetti };
 
   return (
     <ConfettiContext.Provider value={value}>
-      <div className="relative">
-        {showConfetti && <Confetti />}
+      <div className="relative h-screen">
+        {showConfetti && <Confetti key={confettiKey} />}
 
         {children}
       </div>

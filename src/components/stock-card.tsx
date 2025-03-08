@@ -11,9 +11,7 @@ interface StockCardProps {
 }
 
 export default function StockCard({ stock }: StockCardProps) {
-  const { addToPortfolio, portfolio } = usePortfolio();
-
-  const isInPortfolio = portfolio.some((item) => item.ticker === stock.ticker);
+  const { addToPortfolio, isInPortfolio } = usePortfolio();
 
   return (
     <div className="game-card group overflow-hidden">
@@ -62,14 +60,14 @@ export default function StockCard({ stock }: StockCardProps) {
       <div className="p-4 pt-0">
         <Button
           className={`w-full transition-all duration-300 ${
-            isInPortfolio
+            isInPortfolio(stock.ticker)
               ? "border-b-2 border-gray-400 bg-gradient-to-b from-gray-200 to-gray-300 text-gray-700"
               : "game-button game-button-primary group-hover:translate-y-[-2px]"
           }`}
           onClick={() => addToPortfolio(stock)}
-          disabled={isInPortfolio}
+          disabled={isInPortfolio(stock.ticker)}
         >
-          {isInPortfolio ? (
+          {isInPortfolio(stock.ticker) ? (
             <span className="flex items-center">
               <Check className="mr-2 h-4 w-4" />
               Added to Portfolio

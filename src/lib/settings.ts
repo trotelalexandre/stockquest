@@ -1,0 +1,1 @@
+export const XP_ANIMATION_DURATION = 4000;

@@ -39,6 +39,8 @@ export default function PortfolioSection() {
     unsavePortfolio,
     applyEqualAllocation,
     runBacktest,
+    totalWeight,
+    totalStocks,
   } = usePortfolio();
 
   const [weights, setWeights] = useState<Record<string, number>>({});
@@ -46,7 +48,7 @@ export default function PortfolioSection() {
   const [backtestOpen, setBacktestOpen] = useState(false);
 
   const { awardXP } = useXP();
-  const { setShowConfetti } = useConfetti();
+  const { handleSetShowConfetti } = useConfetti();
 
   const handleWeightChange = useCallback(
     (ticker: string, value: number) => {
@@ -60,11 +62,10 @@ export default function PortfolioSection() {
   );
 
   const handleEqualAllocation = useCallback(() => {
-    const totalStocks = portfolio.length;
     const equalWeight = 100 / totalStocks;
 
     const equalWeights: Record<string, number> = {};
-    portfolio.forEach((stock) => {
+    portfolio?.forEach((stock) => {
       equalWeights[stock.ticker] = equalWeight;
     });
 
@@ -72,7 +73,7 @@ export default function PortfolioSection() {
     setWeights(equalWeights);
 
     applyEqualAllocation();
-  }, [portfolio, applyEqualAllocation]);
+  }, [totalStocks, portfolio, applyEqualAllocation]);
 
   const handleSavePortfolio = () => {
     setIsSaving(true);
@@ -83,7 +84,7 @@ export default function PortfolioSection() {
       setIsSaving(false);
 
       // show confetti and award XP
-      setShowConfetti(true);
+      handleSetShowConfetti(true);
       awardXP(50);
     }, 1000);
   };
@@ -100,17 +101,11 @@ export default function PortfolioSection() {
     awardXP(25);
   };
 
-  const totalWeight = useMemo(
-    () => portfolio.reduce((sum, stock) => sum + stock.weight, 0),
-    [portfolio],
-  );
   const isValidPortfolio = useMemo(() => totalWeight === 100, [totalWeight]);
 
   // calculate portfolio diversity score (0-100)
   const diversityScore =
-    portfolio.length > 0
-      ? Math.min(100, Math.max(0, portfolio.length * 10))
-      : 0;
+    totalStocks > 0 ? Math.min(100, Math.max(0, totalStocks * 10)) : 0;
 
   return (
     <div className="overflow-hidden py-2">
@@ -156,7 +151,7 @@ export default function PortfolioSection() {
         </div>
       </div>
 
-      {portfolio.length === 0 ? (
+      {totalStocks === 0 ? (
         <div className="flex flex-col items-center gap-4 py-12 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-transparent">
             <Info className="text-game-blue h-8 w-8" />
@@ -268,7 +263,7 @@ export default function PortfolioSection() {
                 Portfolio Allocation
               </h3>
               <div className="mx-auto aspect-square w-[280px]">
-                {portfolio.some((stock) => stock.weight > 0) ? (
+                {portfolio?.some((stock) => stock.weight > 0) ? (
                   <PortfolioChart />
                 ) : (
                   <div className="flex h-full items-center justify-center text-sm text-gray-500">
@@ -300,7 +295,7 @@ export default function PortfolioSection() {
               </div>
 
               <div className="space-y-4">
-                {portfolio.map((stock) => (
+                {portfolio?.map((stock) => (
                   <div
                     key={stock.ticker}
                     className="flex w-full items-center justify-between gap-4"
@@ -365,8 +360,8 @@ export default function PortfolioSection() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {portfolio.map((stock) => {
-                  // Assuming a $10,000 portfolio for demonstration
+                {portfolio?.map((stock) => {
+                  // assuming a $10,000 portfolio for demonstration
                   const portfolioValue = 10000;
                   const allocation = (stock.weight / 100) * portfolioValue;
 

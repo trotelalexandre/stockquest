@@ -8,10 +8,18 @@ export interface Stock {
   logo?: string;
 }
 
+export type Stocks = Stock[];
+
 export type StockCategory = "new" | "trending" | "gainers" | "losers";
 
 export interface StockSection {
   title: string;
   category: StockCategory;
-  stocks: Stock[];
+  stocks: Stocks;
 }
+
+export type WeightedStock = Stock & { weight: number };
+
+export type WeightedStocks = WeightedStock[];
+
+export type Portfolio = WeightedStocks;

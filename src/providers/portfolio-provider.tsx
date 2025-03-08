@@ -4,13 +4,14 @@ import {
   createContext,
   useCallback,
   useContext,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
-import type { Stock } from "@/lib/types";
+import type { Portfolio, Stock } from "@/lib/types";
 
 interface PortfolioContextType {
-  portfolio: (Stock & { weight: number })[];
+  portfolio: Portfolio | undefined;
   isSaved: boolean;
   addToPortfolio: (stock: Stock) => void;
   removeFromPortfolio: (ticker: string) => void;
@@ -19,6 +20,9 @@ interface PortfolioContextType {
   unsavePortfolio: () => void;
   runBacktest: () => void;
   applyEqualAllocation: () => void;
+  totalWeight: number;
+  totalStocks: number;
+  isInPortfolio: (ticker: string) => boolean;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(
@@ -30,18 +34,17 @@ interface PortfolioProviderProps {
 }
 
 export function PortfolioProvider({ children }: PortfolioProviderProps) {
-  const [portfolio, setPortfolio] = useState<(Stock & { weight: number })[]>(
-    [],
-  );
+  const [portfolio, setPortfolio] = useState<Portfolio | undefined>(undefined);
   const [isSaved, setIsSaved] = useState(false);
 
   const addToPortfolio = useCallback(
     (stock: Stock) => {
-      if (portfolio.some((item) => item.ticker === stock.ticker)) {
+      if (portfolio?.some((item) => item.ticker === stock.ticker)) {
         return;
       }
 
-      setPortfolio([...portfolio, { ...stock, weight: 0 }]);
+      const newStock = { ...stock, weight: 0 };
+      setPortfolio((prev) => (prev ? [...prev, newStock] : [newStock]));
 
       if (isSaved) {
         setIsSaved(false);
@@ -52,29 +55,39 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
 
   const removeFromPortfolio = useCallback(
     (ticker: string) => {
-      setPortfolio(portfolio.filter((stock) => stock.ticker !== ticker));
+      setPortfolio((prev) => prev?.filter((stock) => stock.ticker !== ticker));
 
       if (isSaved) {
         setIsSaved(false);
       }
     },
-    [portfolio, isSaved],
+    [isSaved],
   );
 
   const applyEqualAllocation = useCallback(() => {
-    const equalWeight = 100 / portfolio.length;
+    if (!portfolio) {
+      return;
+    }
+
+    const equalWeight = 100 / portfolio?.length;
     setPortfolio((prev) =>
-      prev.map((stock) => ({ ...stock, weight: equalWeight })),
+      prev?.map((stock) => ({ ...stock, weight: equalWeight })),
     );
   }, [portfolio]);
 
   const updateWeight = useCallback(
     (ticker: string, weight: number) => {
-      setPortfolio((prev) =>
-        prev.map((stock) =>
+      setPortfolio((prev) => {
+        if (!prev) {
+          return prev;
+        }
+
+        const updatedPortfolio = prev.map((stock) =>
           stock.ticker === ticker ? { ...stock, weight } : stock,
-        ),
-      );
+        );
+
+        return updatedPortfolio;
+      });
 
       if (isSaved) {
         setIsSaved(false);
@@ -97,6 +110,19 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
     // TODO: Run a backtest on the portfolio
   }, []);
 
+  const isInPortfolio = useCallback(
+    (ticker: string) =>
+      portfolio?.some((stock) => stock.ticker === ticker) ?? false,
+    [portfolio],
+  );
+
+  const totalWeight = useMemo(
+    () => portfolio?.reduce((acc, stock) => acc + stock.weight, 0) ?? 0,
+    [portfolio],
+  );
+
+  const totalStocks = useMemo(() => portfolio?.length ?? 0, [portfolio]);
+
   const value = {
     portfolio,
     isSaved,
@@ -107,6 +133,9 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
     unsavePortfolio,
     runBacktest,
     applyEqualAllocation,
+    totalWeight,
+    totalStocks,
+    isInPortfolio,
   };
 
   return (
@@ -118,8 +147,10 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
 
 export function usePortfolio() {
   const context = useContext(PortfolioContext);
+
   if (context === undefined) {
     throw new Error("usePortfolio must be used within a PortfolioProvider");
   }
+
   return context;
 }
