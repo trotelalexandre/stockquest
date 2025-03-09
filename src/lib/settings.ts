@@ -7,4 +7,7 @@ export const BACKTEST_ANIMATION_DURATION = 500;
 
 export const PORTFOLIO_STARTING_VALUE = 10000;
 
-export const BASE_URL = "https://stockquest.vercel.app";
+export const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://stockquest.vercel.app";
