@@ -37,6 +37,7 @@ export default function ProgressBar({
           )}
         </div>
       )}
+
       <div className="game-progress-bar">
         <div
           className={`game-progress-fill ${colorClasses[color]}`}

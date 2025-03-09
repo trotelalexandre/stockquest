@@ -1,5 +1,6 @@
 "use client";
 
+import { CONFETTI_ANIMATION_DURATION, CONFETTI_NUMBER } from "@/lib/settings";
 import { useEffect, useState } from "react";
 
 interface ConfettiProps {
@@ -8,8 +9,8 @@ interface ConfettiProps {
 }
 
 export default function Confetti({
-  count = 40,
-  duration = 3000,
+  count = CONFETTI_NUMBER,
+  duration = CONFETTI_ANIMATION_DURATION,
 }: ConfettiProps) {
   const [pieces, setPieces] = useState<
     Array<{ id: number; color: string; left: string; delay: string }>

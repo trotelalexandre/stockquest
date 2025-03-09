@@ -11,7 +11,7 @@ interface StockCardProps {
 }
 
 export default function StockCard({ stock }: StockCardProps) {
-  const { addToPortfolio, isInPortfolio } = usePortfolio();
+  const { handleAddOrRemove, isInPortfolio } = usePortfolio();
 
   return (
     <div className="game-card group overflow-hidden">
@@ -19,9 +19,9 @@ export default function StockCard({ stock }: StockCardProps) {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             {stock.logo && (
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-gray-100 bg-white">
+              <div className="bg-game-light flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border">
                 <Image
-                  src={stock.logo || "/placeholder.svg"}
+                  src={stock.logo}
                   alt={stock.name}
                   width={40}
                   height={40}
@@ -29,15 +29,17 @@ export default function StockCard({ stock }: StockCardProps) {
                 />
               </div>
             )}
+
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-gray-800">{stock.name}</h3>
+                <h3 className="text-foreground font-semibold">{stock.name}</h3>
               </div>
-              <p className="text-xs text-gray-500">{stock.ticker}</p>
+              <p className="text-muted-foreground text-xs">{stock.ticker}</p>
             </div>
           </div>
+
           <div className="text-right">
-            <p className="font-semibold text-gray-800">
+            <p className="text-foreground font-semibold">
               ${stock.price.toFixed(2)}
             </p>
             <p
@@ -54,18 +56,19 @@ export default function StockCard({ stock }: StockCardProps) {
           </div>
         </div>
 
-        <div className="mt-3 text-xs text-gray-500">{stock.company}</div>
+        <div className="text-muted-foreground mt-3 text-xs">
+          {stock.company}
+        </div>
       </div>
 
       <div className="p-4 pt-0">
         <Button
-          className={`w-full transition-all duration-300 ${
+          className={`game-button w-full ${
             isInPortfolio(stock.ticker)
-              ? "border-b-2 border-gray-400 bg-gradient-to-b from-gray-200 to-gray-300 text-gray-700"
-              : "game-button game-button-primary group-hover:translate-y-[-2px]"
+              ? "game-button-gray"
+              : "game-button-primary"
           }`}
-          onClick={() => addToPortfolio(stock)}
-          disabled={isInPortfolio(stock.ticker)}
+          onClick={() => handleAddOrRemove(stock)}
         >
           {isInPortfolio(stock.ticker) ? (
             <span className="flex items-center">

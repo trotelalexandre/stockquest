@@ -9,7 +9,7 @@ import {
   CheckCircle2,
   Lock,
 } from "lucide-react";
-import Badge from "@/components/badge";
+import Badge from "@/components/ui/game-badge";
 
 export default function AchievementsPage() {
   // TODO: achievement categories

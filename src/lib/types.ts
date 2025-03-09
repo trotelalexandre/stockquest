@@ -18,8 +18,19 @@ export interface StockSection {
   stocks: Stocks;
 }
 
+export type StockSections = StockSection[];
+
 export type WeightedStock = Stock & { weight: number };
 
 export type WeightedStocks = WeightedStock[];
 
 export type Portfolio = WeightedStocks;
+
+export type Weights = Record<string, number>;
+
+export interface PortfolioMetadata {
+  id: number;
+  name: string;
+  lastUpdated: Date;
+  stocks: number;
+}

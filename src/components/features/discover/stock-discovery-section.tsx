@@ -2,14 +2,14 @@
 
 import { stockSections } from "@/lib/data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import StockCard from "../../stock-card";
+import StockCard from "./stock-card";
 import { TrendingUp, Sparkles, ArrowUp, ArrowDown } from "lucide-react";
 
 export default function StockDiscoverySection() {
   return (
     <div className="mb-8">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-800">Discover</h2>
+        <h2 className="text-foreground text-2xl font-bold">Discover</h2>
       </div>
 
       <Tabs defaultValue="new">

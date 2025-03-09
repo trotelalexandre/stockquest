@@ -1,6 +1,6 @@
 "use client";
 
-import Confetti from "@/components/confetti";
+import Confetti from "@/components/ui/confetti";
 import { createContext, useContext, useState } from "react";
 
 interface ConfettiContextType {

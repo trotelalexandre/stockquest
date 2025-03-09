@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState } from "react";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TrendingUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface LoginDialogProps {
   open: boolean;
@@ -31,16 +31,23 @@ export default function LoginDialog({
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const router = useRouter();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate login API call
+    // simulate api call
     setTimeout(() => {
       setIsLoading(false);
       onLogin();
       onOpenChange(false);
     }, 1500);
+  };
+
+  const handleSignUp = () => {
+    onOpenChange(false);
+    router.push("/signup");
   };
 
   return (
@@ -52,9 +59,11 @@ export default function LoginDialog({
               <TrendingUp className="h-6 w-6 text-white" />
             </div>
           </div>
+
           <DialogTitle className="text-center text-xl font-bold text-gray-800">
             Welcome to StockQuest
           </DialogTitle>
+
           <DialogDescription className="text-center text-gray-500">
             Login to track your progress and earn rewards
           </DialogDescription>
@@ -103,12 +112,12 @@ export default function LoginDialog({
 
           <div className="text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
-            <a
-              href="#"
-              className="text-game-blue font-semibold hover:underline"
+            <button
+              onClick={handleSignUp}
+              className="text-game-blue cursor-pointer font-semibold hover:underline"
             >
               Sign up
-            </a>
+            </button>
           </div>
         </form>
       </DialogContent>

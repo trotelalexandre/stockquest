@@ -1,9 +1,10 @@
 "use client";
 
+import { Portfolio } from "@/lib/types";
 import { usePortfolio } from "@/providers/portfolio-provider";
-import { useEffect, useRef } from "react";
+import { TrendingUp } from "lucide-react";
+import { useEffect, useMemo, useRef } from "react";
 
-// Generate a color palette for the pie chart
 const COLORS = [
   "#2E7D32", // green
   "#F9A825", // gold
@@ -17,13 +18,16 @@ const COLORS = [
   "#546E7A", // blue-gray
 ];
 
-export default function PortfolioChart() {
+export function PortfolioChart() {
   const { portfolio } = usePortfolio();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // filter out stocks with zero weight
-  const filteredPortfolio = portfolio?.filter((stock) => stock.weight > 0);
+  const filteredPortfolio = useMemo(
+    () => portfolio?.filter((stock) => stock.weight > 0),
+    [portfolio],
+  );
 
   useEffect(() => {
     if (
@@ -153,6 +157,32 @@ export default function PortfolioChart() {
       className="flex h-full w-full items-center justify-center"
     >
       <canvas ref={canvasRef} className="max-h-full max-w-full" />
+    </div>
+  );
+}
+
+interface PortfolioChartCardProps {
+  portfolio?: Portfolio;
+}
+
+export default function PortfolioChartCard({
+  portfolio,
+}: PortfolioChartCardProps) {
+  return (
+    <div className="game-card p-4">
+      <h3 className="text-foreground mb-4 flex items-center gap-2 font-semibold">
+        <TrendingUp className="text-game-primary h-4 w-4" />
+        Portfolio Allocation
+      </h3>
+      <div className="mx-auto aspect-square w-[280px]">
+        {portfolio?.some((stock) => stock.weight > 0) ? (
+          <PortfolioChart />
+        ) : (
+          <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
+            Adjust stock weights to see portfolio allocation
+          </div>
+        )}
+      </div>
     </div>
   );
 }

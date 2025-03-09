@@ -9,7 +9,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
-import Badge from "@/components/badge";
+import Badge from "@/components/ui/game-badge";
+import { BACKTEST_ANIMATION_DURATION } from "@/lib/settings";
+import { useXP } from "@/providers/xp-provider";
 
 interface BacktestDialogProps {
   open: boolean;
@@ -22,21 +24,27 @@ export default function BacktestDialog({
 }: BacktestDialogProps) {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
+  const { awardXP } = useXP();
 
-  // simulate loading
   useEffect(() => {
     if (open) {
       const interval = setInterval(() => {
         setProgress((prev) => {
           const newProgress = prev + 5;
+
           if (newProgress >= 100) {
             clearInterval(interval);
+
             setTimeout(() => {
               onOpenChange(false);
+              awardXP(50);
+
               router.push("/backtest-results");
-            }, 500);
+            }, BACKTEST_ANIMATION_DURATION);
+
             return 100;
           }
+
           return newProgress;
         });
       }, 200);
@@ -44,11 +52,10 @@ export default function BacktestDialog({
       return () => clearInterval(interval);
     }
 
-    // reset when dialog closes
     if (!open) {
       setProgress(0);
     }
-  }, [open, router, onOpenChange]);
+  }, [open, router, onOpenChange, awardXP]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -69,13 +76,13 @@ export default function BacktestDialog({
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="mb-4 text-center text-sm text-gray-500">
+          <p className="text-muted-foreground mb-4 text-center text-sm">
             {progress}% complete
           </p>
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">
+              <span className="text-foreground text-sm">
                 Loading historical data
               </span>
               <Badge
@@ -86,7 +93,7 @@ export default function BacktestDialog({
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">
+              <span className="text-foreground text-sm">
                 Calculating portfolio returns
               </span>
               <Badge
@@ -105,7 +112,7 @@ export default function BacktestDialog({
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">
+              <span className="text-foreground text-sm">
                 Comparing to benchmark
               </span>
               <Badge
@@ -124,7 +131,7 @@ export default function BacktestDialog({
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">Generating report</span>
+              <span className="text-foreground text-sm">Generating report</span>
               <Badge
                 label={
                   progress >= 100
@@ -140,12 +147,6 @@ export default function BacktestDialog({
               />
             </div>
           </div>
-
-          {progress >= 50 && (
-            <div className="mt-4 text-center">
-              <Badge label="+25 XP" color="blue" className="animate-pulse" />
-            </div>
-          )}
         </div>
       </DialogContent>
     </Dialog>

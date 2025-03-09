@@ -239,9 +239,9 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* Refined gamified UI styles with 3D effects */
+/* refined gamified UI styles with 3D effects */
 .game-card {
-  @apply rounded-xl border-2 border-gray-200 bg-white shadow-md transition-all duration-200 hover:shadow-lg;
+  @apply rounded-xl border-2 bg-white transition-all duration-200;
   position: relative;
   overflow: hidden;
 }

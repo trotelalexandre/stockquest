@@ -8,10 +8,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Portfolio, Stock } from "@/lib/types";
+import type { Portfolio, Stock, Weights } from "@/lib/types";
+import { useConfetti } from "./confetti-provider";
+import { useXP } from "./xp-provider";
 
 interface PortfolioContextType {
-  portfolio: Portfolio | undefined;
+  portfolio?: Portfolio;
   isSaved: boolean;
   addToPortfolio: (stock: Stock) => void;
   removeFromPortfolio: (ticker: string) => void;
@@ -23,6 +25,13 @@ interface PortfolioContextType {
   totalWeight: number;
   totalStocks: number;
   isInPortfolio: (ticker: string) => boolean;
+  handleAddOrRemove: (stock: Stock) => void;
+  isSaving: boolean;
+  setIsSaving: React.Dispatch<React.SetStateAction<boolean>>;
+  handleWeightChange: (ticker: string, value: number) => void;
+  weights: Weights;
+  isValidPortfolio: boolean;
+  diversityScore: number;
 }
 
 const PortfolioContext = createContext<PortfolioContextType | undefined>(
@@ -36,6 +45,10 @@ interface PortfolioProviderProps {
 export function PortfolioProvider({ children }: PortfolioProviderProps) {
   const [portfolio, setPortfolio] = useState<Portfolio | undefined>(undefined);
   const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const { handleSetShowConfetti } = useConfetti();
+  const { awardXP } = useXP();
 
   const addToPortfolio = useCallback(
     (stock: Stock) => {
@@ -98,8 +111,18 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
 
   const savePortfolio = useCallback(() => {
     // TODO: Save the portfolio to the user's account
-    setIsSaved(true);
-  }, []);
+    setIsSaving(true);
+
+    // simulate API call
+    setTimeout(() => {
+      setIsSaved(true);
+      setIsSaving(false);
+
+      // show confetti and award XP
+      handleSetShowConfetti(true);
+      awardXP(50);
+    }, 1000);
+  }, [awardXP, handleSetShowConfetti]);
 
   const unsavePortfolio = useCallback(() => {
     // TODO: Unsave the portfolio to the user's account
@@ -116,12 +139,52 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
     [portfolio],
   );
 
+  const handleAddOrRemove = useCallback(
+    (stock: Stock) => {
+      const stockInPortfolio = isInPortfolio(stock.ticker);
+
+      if (stockInPortfolio) {
+        removeFromPortfolio(stock.ticker);
+      } else {
+        addToPortfolio(stock);
+      }
+    },
+    [addToPortfolio, isInPortfolio, removeFromPortfolio],
+  );
+
+  const handleWeightChange = useCallback(
+    (ticker: string, value: number) => {
+      updateWeight(ticker, value);
+    },
+    [updateWeight],
+  );
+
   const totalWeight = useMemo(
     () => portfolio?.reduce((acc, stock) => acc + stock.weight, 0) ?? 0,
     [portfolio],
   );
 
   const totalStocks = useMemo(() => portfolio?.length ?? 0, [portfolio]);
+
+  const calculateWeights = useCallback(() => {
+    if (portfolio) {
+      const weightsObject: Weights = {};
+      portfolio.forEach((stock) => {
+        weightsObject[stock.ticker] = stock.weight;
+      });
+      return weightsObject;
+    }
+    return {};
+  }, [portfolio]);
+
+  const weights = useMemo(() => calculateWeights(), [calculateWeights]);
+
+  const isValidPortfolio = useMemo(() => totalWeight === 100, [totalWeight]);
+
+  const diversityScore = useMemo(
+    () => (totalStocks > 0 ? Math.min(100, Math.max(0, totalStocks * 10)) : 0),
+    [totalStocks],
+  );
 
   const value = {
     portfolio,
@@ -136,6 +199,13 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
     totalWeight,
     totalStocks,
     isInPortfolio,
+    handleAddOrRemove,
+    isSaving,
+    setIsSaving,
+    handleWeightChange,
+    weights,
+    isValidPortfolio,
+    diversityScore,
   };
 
   return (

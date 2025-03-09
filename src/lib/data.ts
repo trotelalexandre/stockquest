@@ -1,6 +1,13 @@
-import type { Stock, StockSection } from "./types";
+import { Home, Bookmark, Award } from "lucide-react";
+import type { Stocks, StockSections } from "./types";
 
-export const mockStocks: Stock[] = [
+export const navItems = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/saved-portfolios", label: "Portfolios", icon: Bookmark },
+  { href: "/achievements", label: "Achievements", icon: Award },
+];
+
+export const mockStocks: Stocks = [
   {
     id: "1",
     name: "Apple Inc.",
@@ -147,7 +154,7 @@ export const mockStocks: Stock[] = [
   },
 ];
 
-export const stockSections: StockSection[] = [
+export const stockSections: StockSections = [
   {
     title: "New Stocks",
     category: "new",
@@ -167,5 +174,41 @@ export const stockSections: StockSection[] = [
     title: "Top Losers",
     category: "losers",
     stocks: [mockStocks[8], mockStocks[13], mockStocks[6], mockStocks[14]],
+  },
+];
+
+export const mockChallenges = [
+  {
+    completed: true,
+    label: "Add 5 stocks",
+  },
+  {
+    completed: false,
+    label: "Balance to 100%",
+  },
+  {
+    completed: false,
+    label: "Run a backtest",
+  },
+];
+
+export const mockSavedPortfolios = [
+  {
+    id: 1,
+    name: "Growth Portfolio",
+    stocks: 8,
+    lastUpdated: new Date("2023-03-06"),
+  },
+  {
+    id: 2,
+    name: "Dividend Portfolio",
+    stocks: 5,
+    lastUpdated: new Date("2023-03-01"),
+  },
+  {
+    id: 3,
+    name: "Tech Stocks",
+    stocks: 6,
+    lastUpdated: new Date("2023-02-28"),
   },
 ];

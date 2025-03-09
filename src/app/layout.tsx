@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { PortfolioProvider } from "@/providers/portfolio-provider";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/core/navbar";
 import XPProvider from "@/providers/xp-provider";
 import ConfettiProvider from "@/providers/confetti-provider";
 
@@ -26,18 +26,18 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <PortfolioProvider>
+          <ConfettiProvider>
             <XPProvider>
-              <ConfettiProvider>
+              <PortfolioProvider>
                 <Navbar />
                 {children}
-              </ConfettiProvider>
+              </PortfolioProvider>
             </XPProvider>
-          </PortfolioProvider>
+          </ConfettiProvider>
         </ThemeProvider>
       </body>
     </html>
