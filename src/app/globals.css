@@ -276,7 +276,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .game-button-secondary {
   background: linear-gradient(180deg, #ffc107 0%, #ffa000 100%);
-  @apply border-b-2 border-[#FF8F00] text-gray-800;
+  @apply text-foreground border-b-2 border-[#FF8F00];
 }
 
 .game-button-secondary:hover {
@@ -350,12 +350,12 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .game-tab-active {
-  @apply bg-gray-100 text-gray-800 shadow-md;
+  @apply text-foreground bg-gray-100 shadow-md;
   box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.1);
 }
 
 .game-tab-inactive {
-  @apply bg-gray-100 text-gray-600 hover:bg-white/50;
+  @apply text-muted-foreground bg-gray-100 hover:bg-white/50;
 }
 
 .game-stat-card {

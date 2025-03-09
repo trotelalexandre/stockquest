@@ -60,18 +60,18 @@ export default function LoginDialog({
             </div>
           </div>
 
-          <DialogTitle className="text-center text-xl font-bold text-gray-800">
+          <DialogTitle className="text-foreground text-center text-xl font-bold">
             Welcome to StockQuest
           </DialogTitle>
 
-          <DialogDescription className="text-center text-gray-500">
+          <DialogDescription className="text-muted-foreground text-center">
             Login to track your progress and earn rewards
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="font-medium text-gray-700">
+            <Label htmlFor="email" className="text-foreground font-medium">
               Email
             </Label>
             <Input
@@ -86,7 +86,7 @@ export default function LoginDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="font-medium text-gray-700">
+            <Label htmlFor="password" className="text-foreground font-medium">
               Password
             </Label>
             <Input
@@ -110,7 +110,7 @@ export default function LoginDialog({
             </Button>
           </DialogFooter>
 
-          <div className="text-center text-sm text-gray-500">
+          <div className="text-muted-foreground text-center text-sm">
             Don&apos;t have an account?{" "}
             <button
               onClick={handleSignUp}

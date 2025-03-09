@@ -29,9 +29,9 @@ export default function ProgressBar({
     <div className={`space-y-1 ${className}`}>
       {label && (
         <div className="flex justify-between text-sm">
-          <span className="font-medium text-gray-700">{label}</span>
+          <span className="text-foreground font-medium">{label}</span>
           {showValue && (
-            <span className="text-gray-500">
+            <span className="text-muted-foreground">
               {value}/{max}
             </span>
           )}

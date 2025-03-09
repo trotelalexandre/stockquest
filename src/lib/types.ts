@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 export interface Stock {
   id: string;
   name: string;
@@ -34,3 +36,27 @@ export interface PortfolioMetadata {
   lastUpdated: Date;
   stocks: number;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  icon: JSX.Element;
+}
+
+export type Categories = Category[];
+
+export interface Achievement {
+  id: number;
+  category: string;
+  title: string;
+  description: string;
+  icon: JSX.Element;
+  progress: number;
+  maxProgress: number;
+  completed: boolean;
+  xpReward: number;
+  dateCompleted?: Date;
+  locked?: boolean;
+}
+
+export type Achievements = Achievement[];

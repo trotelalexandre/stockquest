@@ -23,8 +23,8 @@ export default function Category({ category, achievements }: CategoryProps) {
           {category.icon}
         </div>
         <div>
-          <h3 className="font-bold text-gray-800">{category.name}</h3>
-          <div className="text-xs text-gray-500">
+          <h3 className="text-foreground font-bold">{category.name}</h3>
+          <div className="text-muted-foreground text-xs">
             {completedInCategory}/{categoryAchievements.length} completed
           </div>
         </div>

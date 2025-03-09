@@ -25,7 +25,7 @@ export default function AdjustWeights({
           <h3 className="text-foreground flex items-center gap-2 font-semibold">
             Adjust Weights
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-muted-foreground text-sm">
             Adjust the weights of each stock.
           </p>
         </div>

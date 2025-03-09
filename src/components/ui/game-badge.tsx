@@ -15,7 +15,7 @@ export default function Badge({
     primary:
       "bg-gradient-to-b from-game-primary to-[#388E3C] text-white border-[#2E7D32]",
     secondary:
-      "bg-gradient-to-b from-game-secondary to-[#FFA000] text-gray-800 border-[#FF8F00]",
+      "bg-gradient-to-b from-game-secondary to-[#FFA000] text-foreground border-[#FF8F00]",
     accent:
       "bg-gradient-to-b from-game-accent to-[#D32F2F] text-white border-[#B71C1C]",
     blue: "bg-gradient-to-b from-game-blue to-[#1976D2] text-white border-[#0D47A1]",
