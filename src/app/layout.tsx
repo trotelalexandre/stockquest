@@ -1,7 +1,7 @@
 import "./globals.css";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { PortfolioProvider } from "@/providers/portfolio-provider";
 import Navbar from "@/components/core/navbar";
@@ -10,7 +10,7 @@ import ConfettiProvider from "@/providers/confetti-provider";
 import ProgressBarProvider from "@/providers/progress-bar-provider";
 import AchievementsProvider from "@/providers/achievements-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "StockQuest",
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${font.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
