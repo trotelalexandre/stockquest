@@ -6,19 +6,18 @@ import Achievement from "@/components/features/achievements/achievement";
 export default function AchievementsPage() {
   return (
     <>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="flex flex-col gap-4">
         <h1 className="text-foreground text-2xl font-bold">Achievements</h1>
+        <ProgressCard />
       </div>
 
-      <ProgressCard />
-
-      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         {categories.map((category) => {
           return <Category key={category.id} category={category} />;
         })}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {achievements.map((achievement) => (
           <Achievement key={achievement.id} achievement={achievement} />
         ))}

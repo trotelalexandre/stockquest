@@ -9,7 +9,7 @@ export default function ProgressCard() {
     useAchievements();
 
   return (
-    <div className="game-card mb-8 p-6">
+    <div className="game-card p-6">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="bg-game-primary/10 hidden h-12 w-12 items-center justify-center rounded-full md:flex">

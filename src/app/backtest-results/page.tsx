@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function BacktestResults() {
   return (
     <>
-      <div className="mb-8 flex items-center gap-4">
+      <div className="flex items-center gap-4">
         <Button variant="outline" size="icon" asChild>
           <Link href="/">
             <ArrowLeft className="h-4 w-4" />
