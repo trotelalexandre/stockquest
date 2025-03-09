@@ -7,6 +7,7 @@ import { PortfolioProvider } from "@/providers/portfolio-provider";
 import Navbar from "@/components/core/navbar";
 import XPProvider from "@/providers/xp-provider";
 import ConfettiProvider from "@/providers/confetti-provider";
+import ProgressBarProvider from "@/providers/progress-bar-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,14 +31,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ConfettiProvider>
-            <XPProvider>
-              <PortfolioProvider>
-                <Navbar />
-                {children}
-              </PortfolioProvider>
-            </XPProvider>
-          </ConfettiProvider>
+          <ProgressBarProvider>
+            <ConfettiProvider>
+              <XPProvider>
+                <PortfolioProvider>
+                  <Navbar />
+                  {children}
+                </PortfolioProvider>
+              </XPProvider>
+            </ConfettiProvider>
+          </ProgressBarProvider>
         </ThemeProvider>
       </body>
     </html>

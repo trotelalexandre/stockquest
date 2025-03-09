@@ -2,7 +2,7 @@
 
 import { usePortfolio } from "@/providers/portfolio-provider";
 import { Button } from "@/components/ui/button";
-import { Check, BookmarkX, Trophy } from "lucide-react";
+import { Check, BookmarkX, FlaskConical } from "lucide-react";
 import { useState } from "react";
 import BacktestDialog from "./backtest-dialog";
 import StocksTable from "./cards/stocks-table";
@@ -75,7 +75,7 @@ export default function PortfolioSection() {
             disabled={!isValidPortfolio}
             className="game-button game-button-secondary"
           >
-            <Trophy className="mr-2 h-4 w-4" />
+            <FlaskConical className="mr-2 h-4 w-4" />
             Backtest
           </Button>
         </div>
@@ -149,7 +149,7 @@ export default function PortfolioSection() {
           disabled={!isValidPortfolio}
           className="game-button game-button-secondary"
         >
-          <Trophy className="mr-2 h-4 w-4" />
+          <FlaskConical className="mr-2 h-4 w-4" />
           Backtest
         </Button>
       </div>

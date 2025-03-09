@@ -25,12 +25,12 @@ export default function Navbar() {
     <header className="sticky top-0 z-10 border-b bg-white shadow-sm dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
+          <Link href="/" className="flex items-center">
             <div className="text-game-primary flex items-center gap-2 text-lg font-bold">
               <TrendingUp className="h-5 w-5" />
               <span>StockQuest</span>
             </div>
-          </div>
+          </Link>
 
           <nav className="hidden md:ml-8 md:flex md:gap-4">
             {navItems.map((item) => (

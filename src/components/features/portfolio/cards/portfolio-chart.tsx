@@ -3,163 +3,35 @@
 import { Portfolio } from "@/lib/types";
 import { usePortfolio } from "@/providers/portfolio-provider";
 import { TrendingUp } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { Pie, PieChart } from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { useMemo } from "react";
 
-const COLORS = [
-  "#2E7D32", // green
-  "#F9A825", // gold
-  "#D32F2F", // red
-  "#1976D2", // blue
-  "#5E35B1", // purple
-  "#FF9800", // orange
-  "#00ACC1", // teal
-  "#E91E63", // pink
-  "#8D6E63", // brown
-  "#546E7A", // blue-gray
-];
-
-export function PortfolioChart() {
-  const { portfolio } = usePortfolio();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // filter out stocks with zero weight
-  const filteredPortfolio = useMemo(
-    () => portfolio?.filter((stock) => stock.weight > 0),
-    [portfolio],
-  );
-
-  useEffect(() => {
-    if (
-      !canvasRef.current ||
-      !containerRef.current ||
-      filteredPortfolio?.length === 0
-    )
-      return;
-
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    // set canvas size to match container with proper pixel ratio
-    const rect = container.getBoundingClientRect();
-    const size = Math.min(rect.width, rect.height);
-    const dpr = window.devicePixelRatio || 1;
-
-    // set display size (css pixels)
-    canvas.style.width = `${size}px`;
-    canvas.style.height = `${size}px`;
-
-    // set actual size in memory (scaled for retina)
-    canvas.width = size * dpr;
-    canvas.height = size * dpr;
-
-    // scale all drawing operations by the dpr
-    ctx.scale(dpr, dpr);
-
-    // clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // set up the pie chart
-    const centerX = size / 2;
-    const centerY = size / 2;
-    const radius = Math.min(centerX, centerY) * 0.8;
-
-    // draw the pie chart
-    let startAngle = 0;
-    filteredPortfolio?.forEach((stock, index) => {
-      const sliceAngle = (stock.weight / 100) * 2 * Math.PI;
-
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
-      ctx.closePath();
-
-      ctx.fillStyle = COLORS[index % COLORS.length];
-      ctx.fill();
-
-      // add a white border between slices
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.stroke();
-
-      // draw label if slice is big enough
-      if (stock.weight > 8) {
-        // increased threshold for smaller chart
-        const labelAngle = startAngle + sliceAngle / 2;
-        const labelRadius = radius * 0.7;
-        const labelX = centerX + Math.cos(labelAngle) * labelRadius;
-        const labelY = centerY + Math.sin(labelAngle) * labelRadius;
-
-        ctx.fillStyle = "#FFFFFF";
-        ctx.font = "bold 11px sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(stock.ticker, labelX, labelY);
-      }
-
-      startAngle += sliceAngle;
-    });
-
-    // draw center circle (optional - for donut chart effect)
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius * 0.4, 0, 2 * Math.PI);
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fill();
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "#F5F5F5";
-    ctx.stroke();
-
-    // draw total in center
-    ctx.fillStyle = "#333333";
-    ctx.font = "bold 14px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("Portfolio", centerX, centerY - 8);
-    ctx.font = "12px sans-serif";
-    ctx.fillText("Allocation", centerX, centerY + 8);
-
-    // draw legend
-    const legendX = 10;
-    let legendY = size - (filteredPortfolio?.length ?? 0) * 18 - 10;
-
-    ctx.font = "10px sans-serif";
-    filteredPortfolio?.forEach((stock, index) => {
-      const color = COLORS[index % COLORS.length];
-
-      // draw color box
-      ctx.fillStyle = color;
-      ctx.fillRect(legendX, legendY - 7, 10, 10);
-
-      // add border
-      ctx.lineWidth = 0.5;
-      ctx.strokeStyle = "#FFFFFF";
-      ctx.strokeRect(legendX, legendY - 7, 10, 10);
-
-      // draw label
-      ctx.fillStyle = "#333333";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "middle";
-      ctx.fillText(
-        `${stock.ticker} (${stock.weight.toFixed(1)}%)`,
-        legendX + 16,
-        legendY,
-      );
-
-      legendY += 18;
-    });
-  }, [filteredPortfolio]);
-
-  return (
-    <div
-      ref={containerRef}
-      className="flex h-full w-full items-center justify-center"
-    >
-      <canvas ref={canvasRef} className="max-h-full max-w-full" />
-    </div>
-  );
-}
+const COLORS = {
+  color1: "#FFC107",
+  color2: "#2196F3",
+  color3: "#4CAF50",
+  color4: "#FF5722",
+  color5: "#9C27B0",
+  color6: "#E91E63",
+  color7: "#00BCD4",
+  color8: "#FF9800",
+  color9: "#795548",
+  color10: "#607D8B",
+};
 
 interface PortfolioChartCardProps {
   portfolio?: Portfolio;
@@ -168,21 +40,94 @@ interface PortfolioChartCardProps {
 export default function PortfolioChartCard({
   portfolio,
 }: PortfolioChartCardProps) {
-  return (
-    <div className="game-card p-4">
-      <h3 className="text-foreground mb-4 flex items-center gap-2 font-semibold">
-        <TrendingUp className="text-game-primary h-4 w-4" />
-        Portfolio Allocation
-      </h3>
-      <div className="mx-auto aspect-square w-[280px]">
-        {portfolio?.some((stock) => stock.weight > 0) ? (
-          <PortfolioChart />
-        ) : (
-          <div className="text-muted-foreground flex h-full items-center justify-center text-sm">
+  const { portfolio: contextPortfolio } = usePortfolio();
+  const activePortfolio = portfolio || contextPortfolio;
+
+  const chartData = useMemo(() => {
+    const filtered = activePortfolio?.filter((stock) => stock.weight > 0) || [];
+
+    return filtered.map((stock, index) => ({
+      ticker: stock.ticker,
+      weight: stock.weight,
+      fill: Object.values(COLORS)[index % Object.keys(COLORS).length],
+    }));
+  }, [activePortfolio]);
+
+  const chartConfig = useMemo(() => {
+    const config: ChartConfig = {
+      weight: {
+        label: "Weight",
+      },
+    };
+    chartData.forEach((stock, index) => {
+      config[stock.ticker.toLowerCase()] = {
+        label: stock.ticker,
+        color: Object.values(COLORS)[index % Object.keys(COLORS).length],
+      };
+    });
+    return config;
+  }, [chartData]);
+
+  if (!chartData.length) {
+    return (
+      <Card className="game-card">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="text-game-primary h-4 w-4" />
+            Portfolio Allocation
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-muted-foreground flex h-[250px] items-center justify-center text-sm">
             Adjust stock weights to see portfolio allocation
           </div>
-        )}
-      </div>
-    </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="game-card">
+      <CardHeader className="items-start pb-0">
+        <CardTitle className="flex items-center gap-2">
+          <TrendingUp className="text-game-primary h-4 w-4" />
+          Portfolio Allocation
+        </CardTitle>
+        <CardDescription>Current Portfolio Distribution</CardDescription>
+      </CardHeader>
+
+      <CardContent className="flex-1 pb-0">
+        <ChartContainer
+          config={chartConfig}
+          className="[&_.recharts-pie-label-text]:fill-foreground mx-auto flex aspect-square max-h-[300px] items-center justify-center overflow-visible pb-0"
+        >
+          <PieChart>
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value: string) => `${value}`}
+                />
+              }
+            />
+            <Pie
+              data={chartData}
+              dataKey="weight"
+              nameKey="ticker"
+              label={({ name, value }) => (value > 8 ? `${name}` : undefined)}
+              labelLine={false}
+              innerRadius={40}
+              outerRadius={80}
+              animationDuration={300}
+            />
+          </PieChart>
+        </ChartContainer>
+      </CardContent>
+
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="text-muted-foreground leading-none">
+          Showing current portfolio allocation by weight
+        </div>
+      </CardFooter>
+    </Card>
   );
 }
