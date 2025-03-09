@@ -5,7 +5,7 @@ import Achievement from "@/components/features/achievements/achievement";
 
 export default function AchievementsPage() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-foreground text-2xl font-bold">Achievements</h1>
       </div>
@@ -23,6 +23,6 @@ export default function AchievementsPage() {
           <Achievement key={achievement.id} achievement={achievement} />
         ))}
       </div>
-    </main>
+    </>
   );
 }

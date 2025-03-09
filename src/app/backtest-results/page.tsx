@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function BacktestResults() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <>
       <div className="mb-8 flex items-center gap-4">
         <Button variant="outline" size="icon" asChild>
           <Link href="/">
@@ -46,6 +46,6 @@ export default function BacktestResults() {
           </div>
         </div>
       </div>
-    </main>
+    </>
   );
 }

@@ -3,9 +3,9 @@ import StockDiscoverySection from "@/components/features/discover/stock-discover
 
 export default function Home() {
   return (
-    <main className="container mx-auto flex flex-col gap-8 px-4 py-8">
+    <>
       <PortfolioSection />
       <StockDiscoverySection />
-    </main>
+    </>
   );
 }
