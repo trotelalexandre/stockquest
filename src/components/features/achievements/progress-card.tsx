@@ -1,35 +1,12 @@
-import { achievements } from "@/lib/data/achievements";
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useAchievements } from "@/providers/achievements-provider";
 import { Trophy } from "lucide-react";
-import { useMemo } from "react";
 
 export default function ProgressCard() {
-  const totalAchievements = useMemo(() => achievements.length, []);
-  const completedAchievements = useMemo(
-    () => achievements.filter((a) => a.completed).length,
-    [],
-  );
-
-  const overallProgress = useMemo(
-    () => Math.round((completedAchievements / totalAchievements) * 100),
-    [completedAchievements, totalAchievements],
-  );
-
-  const earnedXP = useMemo(
-    () =>
-      achievements
-        .filter((a) => a.completed)
-        .reduce((sum, a) => sum + a.xpReward, 0),
-    [],
-  );
-
-  const potentialXP = useMemo(
-    () =>
-      achievements
-        .filter((a) => !a.completed && !a.locked)
-        .reduce((sum, a) => sum + a.xpReward, 0),
-    [],
-  );
+  const { overallProgress, completedAchievements, earnedXP, potentialXP } =
+    useAchievements();
 
   return (
     <div className="game-card mb-8 p-6">

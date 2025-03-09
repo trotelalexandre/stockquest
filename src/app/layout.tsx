@@ -8,6 +8,7 @@ import Navbar from "@/components/core/navbar";
 import XPProvider from "@/providers/xp-provider";
 import ConfettiProvider from "@/providers/confetti-provider";
 import ProgressBarProvider from "@/providers/progress-bar-provider";
+import AchievementsProvider from "@/providers/achievements-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,10 +35,12 @@ export default function RootLayout({
           <ProgressBarProvider>
             <ConfettiProvider>
               <XPProvider>
-                <PortfolioProvider>
-                  <Navbar />
-                  {children}
-                </PortfolioProvider>
+                <AchievementsProvider>
+                  <PortfolioProvider>
+                    <Navbar />
+                    {children}
+                  </PortfolioProvider>
+                </AchievementsProvider>
               </XPProvider>
             </ConfettiProvider>
           </ProgressBarProvider>

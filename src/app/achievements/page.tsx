@@ -14,13 +14,7 @@ export default function AchievementsPage() {
 
       <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
         {categories.map((category) => {
-          return (
-            <Category
-              key={category.id}
-              category={category}
-              achievements={achievements}
-            />
-          );
+          return <Category key={category.id} category={category} />;
         })}
       </div>
 

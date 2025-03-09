@@ -8,9 +8,11 @@ import { useState } from "react";
 import LoginDialog from "../features/auth/login-dialog";
 import Badge from "../ui/game-badge";
 import { navItems } from "@/lib/data";
+import { useAchievements } from "@/providers/achievements-provider";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { level } = useAchievements();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -52,7 +54,7 @@ export default function Navbar() {
           <div className="hidden md:flex md:items-center md:gap-4">
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
-                <Badge label="Level 8" color="purple" />
+                <Badge label={`Level ${level}`} color="purple" />
               </div>
             ) : (
               <Button
@@ -68,7 +70,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2 md:hidden">
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
-                <Badge label="Level 8" color="purple" />
+                <Badge label={`Level ${level}`} color="purple" />
               </div>
             ) : (
               <Button

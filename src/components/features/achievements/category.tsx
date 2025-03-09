@@ -1,20 +1,22 @@
-import { achievements, categories } from "@/lib/data/achievements";
+"use client";
+
+import { categories } from "@/lib/data/achievements";
+import { useAchievements } from "@/providers/achievements-provider";
 
 interface CategoryProps {
   category: (typeof categories)[0];
-  achievements: typeof achievements;
 }
 
-export default function Category({ category, achievements }: CategoryProps) {
-  const categoryAchievements = achievements.filter(
-    (a) => a.category === category.id,
-  );
-  const completedInCategory = categoryAchievements.filter(
-    (a) => a.completed,
-  ).length;
-  const categoryProgress = Math.round(
-    (completedInCategory / categoryAchievements.length) * 100,
-  );
+export default function Category({ category }: CategoryProps) {
+  const {
+    getCategoryAchievements,
+    getCategoryCompletedAchievements,
+    getCategoryProgress,
+  } = useAchievements();
+
+  const categoryAchievements = getCategoryAchievements(category);
+  const completedInCategory = getCategoryCompletedAchievements(category);
+  const categoryProgress = getCategoryProgress(category);
 
   return (
     <div className="game-card p-4">
