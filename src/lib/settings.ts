@@ -6,3 +6,5 @@ export const CONFETTI_NUMBER = 40;
 export const BACKTEST_ANIMATION_DURATION = 500;
 
 export const PORTFOLIO_STARTING_VALUE = 10000;
+
+export const BASE_URL = "https://stockquest.vercel.app";
