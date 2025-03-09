@@ -1,7 +1,7 @@
 "use client";
 
-import { achievements } from "@/lib/data/achievements";
-import { Achievements, Category } from "@/lib/types";
+import { achievements } from "@/lib/achievements";
+import { Achievement, Achievements, Category } from "@/lib/types";
 import React, { createContext, useContext, useMemo } from "react";
 
 interface AchievementsContextProps {
@@ -29,7 +29,7 @@ export default function AchievementsProvider({
 }: AchievementsProviderProps) {
   const totalAchievements = useMemo(() => achievements.length, []);
   const completedAchievements = useMemo(
-    () => achievements.filter((a) => a.completed).length,
+    () => achievements.filter((a: Achievement) => a.completed).length,
     [],
   );
   const overallProgress = useMemo(
@@ -40,15 +40,15 @@ export default function AchievementsProvider({
   const earnedXP = useMemo(
     () =>
       achievements
-        .filter((a) => a.completed)
-        .reduce((sum, a) => sum + a.xpReward, 0),
+        .filter((a: Achievement) => a.completed)
+        .reduce((sum: number, a: Achievement) => sum + a.xpReward, 0),
     [],
   );
   const potentialXP = useMemo(
     () =>
       achievements
-        .filter((a) => !a.completed && !a.locked)
-        .reduce((sum, a) => sum + a.xpReward, 0),
+        .filter((a: Achievement) => !a.completed && !a.locked)
+        .reduce((sum: number, a: Achievement) => sum + a.xpReward, 0),
     [],
   );
 
@@ -56,7 +56,7 @@ export default function AchievementsProvider({
 
   const getCategoryAchievements = (category: Category) => {
     const categoryAchievements = achievements.filter(
-      (a) => a.category === category.id,
+      (a: Achievement) => a.category === category.id,
     );
 
     return categoryAchievements;
@@ -66,7 +66,7 @@ export default function AchievementsProvider({
     const categoryAchievements = getCategoryAchievements(category);
 
     const completedInCategory = categoryAchievements.filter(
-      (a) => a.completed,
+      (a: Achievement) => a.completed,
     ).length;
 
     return completedInCategory;

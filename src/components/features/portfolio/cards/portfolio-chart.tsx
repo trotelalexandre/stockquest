@@ -78,7 +78,7 @@ export default function PortfolioChartCard({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-muted-foreground flex h-[250px] items-center justify-center text-sm">
+          <div className="text-muted-foreground flex h-[250px] items-center justify-center text-center text-sm">
             Adjust stock weights to see portfolio allocation
           </div>
         </CardContent>
