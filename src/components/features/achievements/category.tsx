@@ -1,6 +1,6 @@
 "use client";
 
-import { categories } from "@/lib/data/achievements";
+import { categories } from "@/lib/achievements";
 import { useAchievements } from "@/providers/achievements-provider";
 
 interface CategoryProps {

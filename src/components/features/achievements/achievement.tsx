@@ -1,4 +1,4 @@
-import { achievements } from "@/lib/data/achievements";
+import { achievements } from "@/lib/achievements";
 import { Lock } from "lucide-react";
 import Badge from "@/components/ui/game-badge";
 import { cn } from "@/lib/utils";
