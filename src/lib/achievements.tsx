@@ -8,7 +8,7 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
-import { Achievements, Categories } from "../types";
+import { Achievements, Categories } from "@/lib/types";
 
 export const categories: Categories = [
   { id: "beginner", name: "Beginner", icon: <Star className="h-5 w-5" /> },

@@ -43,15 +43,15 @@ export default function StockCard({ stock }: StockCardProps) {
               ${stock.price.toFixed(2)}
             </p>
             <p
-              className={`flex items-center justify-end text-xs ${stock.change >= 0 ? "text-game-primary" : "text-game-accent"}`}
+              className={`flex items-center justify-end text-xs ${(stock?.change_percentage ?? 0) >= 0 ? "text-game-primary" : "text-game-accent"}`}
             >
-              {stock.change >= 0 ? (
+              {(stock?.change_percentage ?? 0) >= 0 ? (
                 <TrendingUp className="mr-1 h-3 w-3" />
               ) : (
                 <TrendingDown className="mr-1 h-3 w-3" />
               )}
-              {stock.change >= 0 ? "+" : ""}
-              {stock.change.toFixed(2)}%
+              {(stock?.change_percentage ?? 0) >= 0 ? "+" : ""}
+              {(stock?.change_percentage ?? 0).toFixed(2)}%
             </p>
           </div>
         </div>
