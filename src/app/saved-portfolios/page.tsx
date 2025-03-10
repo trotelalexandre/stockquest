@@ -8,7 +8,12 @@ export default function SavedPortfolios() {
   const { savedPortfolios, isLoading } = useSavedPortfolios();
 
   if (savedPortfolios?.length === 0) {
-    return <div className="text-foreground">No saved portfolios yet.</div>;
+    return (
+      <div className="flex flex-col gap-4">
+        <h1 className="text-foreground text-2xl font-bold">Saved Portfolios</h1>
+        <p className="text-muted-foreground">No saved portfolios yet.</p>
+      </div>
+    );
   }
 
   return (
