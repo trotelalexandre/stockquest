@@ -1,23 +1,21 @@
 import { JSX } from "react";
 
 export interface Stock {
-  id: string;
   name: string;
   ticker: string;
   price: number;
-  change: number;
-  company: string;
+  change_percentage?: number;
+  company?: string;
   logo?: string;
 }
 
 export type Stocks = Stock[];
 
-export type StockCategory = "new" | "trending" | "gainers" | "losers";
+export type StockCategory = "gainers" | "new" | "trending";
 
 export interface StockSection {
   title: string;
   category: StockCategory;
-  stocks: Stocks;
 }
 
 export type StockSections = StockSection[];

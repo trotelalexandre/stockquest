@@ -15,34 +15,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TrendingUp } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 interface LoginDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onLogin: () => void;
 }
 
-export default function LoginDialog({
-  open,
-  onOpenChange,
-  onLogin,
-}: LoginDialogProps) {
+export default function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // simulate api call
-    setTimeout(() => {
+    const { error } = await authClient.signIn.email({
+      email,
+      password,
+    });
+
+    if (error) {
+      toast.error("An error occurred. Please try again later.");
       setIsLoading(false);
-      onLogin();
-      onOpenChange(false);
-    }, 1500);
+      return;
+    }
+
+    setIsLoading(false);
+    onOpenChange(false);
+    router.push("/");
   };
 
   const handleSignUp = () => {

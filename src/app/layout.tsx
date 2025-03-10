@@ -10,6 +10,7 @@ import ConfettiProvider from "@/providers/confetti-provider";
 import ProgressBarProvider from "@/providers/progress-bar-provider";
 import AchievementsProvider from "@/providers/achievements-provider";
 import NotificationBanner from "@/components/core/push-notifications";
+import { Toaster } from "@/components/ui/sonner";
 
 const font = Space_Grotesk({ subsets: ["latin"] });
 
@@ -42,6 +43,8 @@ export default function RootLayout({
                     <main className="container mx-auto flex flex-col gap-8 px-4 py-8 pb-16 md:pb-8">
                       {children}
                     </main>
+
+                    <Toaster />
                     <NotificationBanner />
                   </PortfolioProvider>
                 </AchievementsProvider>

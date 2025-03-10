@@ -4,24 +4,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogIn, TrendingUp, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LoginDialog from "../features/auth/login-dialog";
 import Badge from "../ui/game-badge";
 import { navItems } from "@/lib/data";
 import { useAchievements } from "@/providers/achievements-provider";
+import { authClient } from "@/lib/auth-client";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { level } = useAchievements();
+  const { data: session } = authClient.useSession();
+
+  useEffect(() => {
+    if (session) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [session]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setMobileMenuOpen(false);
-  };
 
   return (
     <header className="sticky top-0 z-10 border-b bg-white shadow-sm dark:bg-gray-900">
@@ -55,6 +60,12 @@ export default function Navbar() {
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 <Badge label={`Level ${level}`} color="purple" />
+                <Button
+                  variant="outline"
+                  onClick={async () => await authClient.signOut()}
+                >
+                  Log out
+                </Button>
               </div>
             ) : (
               <Button
@@ -71,6 +82,12 @@ export default function Navbar() {
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 <Badge label={`Level ${level}`} color="purple" />
+                <Button
+                  variant="outline"
+                  onClick={async () => await authClient.signOut()}
+                >
+                  Log out
+                </Button>
               </div>
             ) : (
               <Button
@@ -119,11 +136,7 @@ export default function Navbar() {
         )}
       </div>
 
-      <LoginDialog
-        open={loginOpen}
-        onOpenChange={setLoginOpen}
-        onLogin={handleLogin}
-      />
+      <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
     </header>
   );
 }
