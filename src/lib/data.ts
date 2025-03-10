@@ -73,6 +73,16 @@ export const popularStocks: StocksMetadata = [
     name: "Meta",
     company: "Meta Platforms Inc.",
   },
+  {
+    ticker: "BTC-USD",
+    name: "Bitcoin",
+    company: "Bitcoin",
+  },
+  {
+    ticker: "ETH-USD",
+    name: "Ethereum",
+    company: "Ethereum",
+  },
 ];
 
 export const mockPortfolioData = [
