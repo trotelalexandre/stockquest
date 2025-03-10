@@ -12,3 +12,6 @@ export const PORTFOLIO_STARTING_VALUE = 10000;
 export const BASE_URL = IS_DEV
   ? "http://localhost:3000"
   : "https://stockquest.vercel.app";
+
+export const MINIMUM_USERNAME_LENGTH = 5;
+export const MAXIMUM_USERNAME_LENGTH = 30;

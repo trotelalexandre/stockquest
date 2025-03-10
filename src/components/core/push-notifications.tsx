@@ -71,23 +71,19 @@ export default function NotificationBanner() {
     <div className="bg-background fixed right-0 bottom-0 left-0 z-50 border-t p-4 shadow-lg md:hidden">
       <div className="container mx-auto flex flex-wrap items-center justify-center gap-4">
         {!isStandalone && (
-          <div className="flex items-center gap-4">
-            <Button size="sm">Add to Home Screen</Button>
-            {isIOS && (
-              <span className="text-muted-foreground text-sm md:inline">
-                Tap{" "}
-                <span role="img" aria-label="share icon">
-                  {" "}
-                  ⎋{" "}
-                </span>{" "}
-                then{" "}
-                <span role="img" aria-label="plus icon">
-                  {" "}
-                  ➕{" "}
-                </span>
-              </span>
-            )}
-          </div>
+          <Button
+            size="sm"
+            className="w-full"
+            onClick={async () => {
+              await navigator.share({
+                title: "StockQuest",
+                text: "Check out StockQuest, the best stock market simulator!",
+                url: window.location.href,
+              });
+            }}
+          >
+            Add to Home Screen
+          </Button>
         )}
       </div>
     </div>

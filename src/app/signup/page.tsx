@@ -10,6 +10,10 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import {
+  MAXIMUM_USERNAME_LENGTH,
+  MINIMUM_USERNAME_LENGTH,
+} from "@/lib/settings";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -28,12 +32,27 @@ export default function SignupPage() {
       return;
     }
 
+    if (!username) {
+      toast.error("Please enter a username first");
+      return;
+    }
+
+    if (
+      username.length < MINIMUM_USERNAME_LENGTH ||
+      username.length > MAXIMUM_USERNAME_LENGTH
+    ) {
+      toast.error("Username must be between 5 and 30 characters");
+      return;
+    }
+
     setIsLoading(true);
 
     const { error } = await authClient.signUp.email({
       email,
       password,
       name: username,
+      username,
+      displayUsername: username,
       callbackURL: "/",
     });
 
@@ -50,6 +69,14 @@ export default function SignupPage() {
   const handlePasskeySignup = async () => {
     if (!username) {
       toast.error("Please enter a username first");
+      return;
+    }
+
+    if (
+      username.length < MINIMUM_USERNAME_LENGTH ||
+      username.length > MAXIMUM_USERNAME_LENGTH
+    ) {
+      toast.error("Username must be between 5 and 30 characters");
       return;
     }
 

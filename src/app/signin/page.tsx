@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function SigninPage() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isPasskeyLoading, setIsPasskeyLoading] = useState(false);
@@ -33,12 +33,16 @@ export default function SigninPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!username || !password) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
     setIsLoading(true);
 
-    const data = await authClient.signIn.email({
-      email,
+    const data = await authClient.signIn.username({
+      username,
       password,
-      callbackURL: "/",
     });
 
     if (data?.error) {
@@ -91,18 +95,18 @@ export default function SigninPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground font-medium">
-                Email
+              <Label htmlFor="username" className="text-foreground font-medium">
+                Username
               </Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                type="text"
+                placeholder="john_doe"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="game-input"
-                autoComplete="email webauthn"
+                autoComplete="username webauthn"
               />
             </div>
 

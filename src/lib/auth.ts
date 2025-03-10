@@ -2,7 +2,13 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db";
 import { passkey } from "better-auth/plugins/passkey";
-import { BASE_URL, IS_DEV } from "./settings";
+import {
+  BASE_URL,
+  IS_DEV,
+  MAXIMUM_USERNAME_LENGTH,
+  MINIMUM_USERNAME_LENGTH,
+} from "./settings";
+import { username } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -17,6 +23,10 @@ export const auth = betterAuth({
       rpID: IS_DEV ? "localhost" : "stockquest.app",
       rpName: "StockQuest",
       origin: BASE_URL,
+    }),
+    username({
+      minUsernameLength: MINIMUM_USERNAME_LENGTH,
+      maxUsernameLength: MAXIMUM_USERNAME_LENGTH,
     }),
   ],
 });
