@@ -2,9 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "@/db";
 import { passkey } from "better-auth/plugins/passkey";
-import { BASE_URL } from "./settings";
-
-const dev = process.env.NODE_ENV === "development";
+import { BASE_URL, IS_DEV } from "./settings";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -16,7 +14,7 @@ export const auth = betterAuth({
   },
   plugins: [
     passkey({
-      rpID: dev ? "localhost" : "stockquest.app",
+      rpID: IS_DEV ? "localhost" : "stockquest.app",
       rpName: "StockQuest",
       origin: BASE_URL,
     }),
