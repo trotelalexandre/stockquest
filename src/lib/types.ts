@@ -1,3 +1,4 @@
+import { getStockData } from "@/utils/getStockData";
 import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, JSX, RefAttributes } from "react";
 
@@ -84,3 +85,5 @@ export interface Challenge {
 }
 
 export type Challenges = Challenge[];
+
+export type YahooStock = Awaited<ReturnType<typeof getStockData>>;

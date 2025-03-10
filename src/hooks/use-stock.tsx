@@ -1,6 +1,7 @@
-import { YahooStock } from "@/app/api/stock/[ticker]/route";
+"use client";
+
 import { fetcher } from "@/lib/swr";
-import { Stock, StockMetadata } from "@/lib/types";
+import { Stock, StockMetadata, YahooStock } from "@/lib/types";
 import useSWR from "swr";
 
 export const useStock = (metadata: StockMetadata) => {
@@ -15,7 +16,7 @@ export const useStock = (metadata: StockMetadata) => {
     price: data?.regularMarketPrice ?? 0,
     change_percentage: data?.regularMarketChangePercent ?? 0,
     company: metadata?.company ?? data?.longName ?? "",
-    logo: metadata?.logo ?? data?.logo_url ?? "",
+    logo: metadata?.logo ?? "",
   };
 
   return {
