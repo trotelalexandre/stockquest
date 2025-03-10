@@ -134,22 +134,24 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              <div className="grid grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  onClick={async () => await authClient.signOut()}
-                >
-                  Log out
-                </Button>
+              {isLoggedIn && (
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    variant="outline"
+                    onClick={async () => await authClient.signOut()}
+                  >
+                    Log out
+                  </Button>
 
-                <Button
-                  variant="default"
-                  disabled
-                  onClick={async () => await authClient.signOut()}
-                >
-                  My Account
-                </Button>
-              </div>
+                  <Button
+                    variant="default"
+                    disabled
+                    onClick={async () => await authClient.signOut()}
+                  >
+                    My Account
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         )}
