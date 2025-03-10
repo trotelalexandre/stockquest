@@ -105,7 +105,6 @@ export default function SigninPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="game-input"
                 autoComplete="username webauthn"
               />
             </div>
@@ -121,7 +120,6 @@ export default function SigninPage() {
                 placeholder="•••••••••••••••"
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="game-input"
                 autoComplete="current-password webauthn"
               />
             </div>

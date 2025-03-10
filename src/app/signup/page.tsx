@@ -134,7 +134,6 @@ export default function SignupPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="game-input"
               />
             </div>
 
@@ -149,7 +148,6 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="game-input"
               />
             </div>
 
@@ -164,7 +162,6 @@ export default function SignupPage() {
                 placeholder="•••••••••••••••"
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="game-input"
               />
             </div>
 
@@ -182,7 +179,6 @@ export default function SignupPage() {
                 placeholder="•••••••••••••••"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="game-input"
               />
             </div>
 

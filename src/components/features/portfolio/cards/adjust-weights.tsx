@@ -56,7 +56,7 @@ export default function AdjustWeights({
               <div className="flex items-center gap-2">
                 <Input
                   type="number"
-                  className="game-input w-16"
+                  className="w-16"
                   value={weights[stock.ticker] ?? stock.weight ?? ""}
                   onChange={(e) =>
                     handleWeightChange(
