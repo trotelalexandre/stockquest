@@ -45,32 +45,32 @@ export const challenges: Challenges = [
 export const popularStocks: StocksMetadata = [
   {
     ticker: "AAPL",
-    name: "Apple Inc.",
+    name: "Apple",
     company: "Apple Inc.",
   },
   {
     ticker: "MSFT",
-    name: "Microsoft Corporation",
+    name: "Microsoft",
     company: "Microsoft Corporation",
   },
   {
     ticker: "AMZN",
-    name: "Amazon.com Inc.",
+    name: "Amazon",
     company: "Amazon.com Inc.",
   },
   {
     ticker: "GOOGL",
-    name: "Alphabet Inc.",
+    name: "Alphabet",
     company: "Alphabet Inc.",
   },
   {
     ticker: "TSLA",
-    name: "Tesla Inc.",
+    name: "Tesla",
     company: "Tesla Inc.",
   },
   {
     ticker: "META",
-    name: "Meta Platforms Inc.",
+    name: "Meta",
     company: "Meta Platforms Inc.",
   },
 ];
