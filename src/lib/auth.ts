@@ -8,7 +8,7 @@ import {
   MAXIMUM_USERNAME_LENGTH,
   MINIMUM_USERNAME_LENGTH,
 } from "./settings";
-import { username } from "better-auth/plugins";
+import { username, admin } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -28,5 +28,6 @@ export const auth = betterAuth({
       minUsernameLength: MINIMUM_USERNAME_LENGTH,
       maxUsernameLength: MAXIMUM_USERNAME_LENGTH,
     }),
+    admin(),
   ],
 });

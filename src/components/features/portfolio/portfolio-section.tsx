@@ -18,7 +18,6 @@ export default function PortfolioSection() {
     portfolio,
     isSaved,
     removeFromPortfolio,
-    savePortfolio,
     unsavePortfolio,
     applyEqualAllocation,
     runBacktest,
