@@ -30,31 +30,33 @@ export default function Navbar() {
     <header className="sticky top-0 z-10 border-b bg-white shadow-sm dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <div className="text-game-primary flex items-center gap-2 text-lg font-bold">
-              <TrendingUp className="h-5 w-5" />
-              <span>StockQuest</span>
-            </div>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/" className="flex items-center">
+              <div className="text-game-primary flex items-center gap-2 text-lg font-bold">
+                <TrendingUp className="h-5 w-5" />
+                <span>StockQuest</span>
+              </div>
+            </Link>
 
-          <nav className="hidden md:ml-8 md:flex md:gap-4">
-            {navItems.map((item) => {
-              return (
-                <Link
-                  key={item.href}
-                  href={item.disabled ? "#" : item.href}
-                  className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold ${
-                    pathname === item.href
-                      ? "bg-game-primary/10 text-game-primary"
-                      : "text-foreground hover:bg-gray-100 dark:hover:bg-gray-800"
-                  } ${item.disabled ? "!cursor-not-allowed opacity-50" : ""}`}
-                >
-                  <item.icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
+            <nav className="hidden md:ml-8 md:flex md:gap-4">
+              {navItems.map((item) => {
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.disabled ? "#" : item.href}
+                    className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold ${
+                      pathname === item.href
+                        ? "bg-game-primary/10 text-game-primary"
+                        : "text-foreground hover:bg-gray-100 dark:hover:bg-gray-800"
+                    } ${item.disabled ? "!cursor-not-allowed opacity-50" : ""}`}
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
 
           <div className="hidden md:flex md:items-center md:gap-4">
             {isLoggedIn ? (
