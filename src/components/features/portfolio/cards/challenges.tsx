@@ -1,11 +1,11 @@
-import { mockChallenges } from "@/lib/data";
+import { challenges } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { useMemo } from "react";
 
 export default function Challenges() {
   const totalCompleted = useMemo(
-    () => mockChallenges.filter((challenge) => challenge.completed).length,
+    () => challenges?.filter((challenge) => challenge.completed)?.length ?? 0,
     [],
   );
 
@@ -14,12 +14,12 @@ export default function Challenges() {
       <div className="mb-2 flex items-center justify-between">
         <h3 className="text-foreground font-semibold">Challenges</h3>
         <span className="text-game-purple font-semibold">
-          {totalCompleted}/{mockChallenges?.length}
+          {totalCompleted}/{challenges?.length}
         </span>
       </div>
 
       <div className="mt-2 space-y-2">
-        {mockChallenges?.map((challenge) => {
+        {challenges?.map((challenge) => {
           return (
             <ChallengeItem
               key={challenge.label}

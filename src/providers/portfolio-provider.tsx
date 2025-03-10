@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Portfolio, Stock, Weights } from "@/lib/types";
+import type { Portfolio, Stock, WeightedStock, Weights } from "@/lib/types";
 import { useConfetti } from "./confetti-provider";
 import { useXP } from "./xp-provider";
 
@@ -56,7 +56,10 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
         return;
       }
 
-      const newStock = { ...stock, weight: 0 };
+      const newStock: WeightedStock = {
+        ...stock,
+        weight: 0,
+      };
       setPortfolio((prev) => (prev ? [...prev, newStock] : [newStock]));
 
       if (isSaved) {

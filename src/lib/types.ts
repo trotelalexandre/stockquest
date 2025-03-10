@@ -1,21 +1,28 @@
-import { JSX } from "react";
+import { LucideProps } from "lucide-react";
+import { ForwardRefExoticComponent, JSX, RefAttributes } from "react";
 
-export interface Stock {
-  name: string;
-  ticker: string;
+export type Stock = StockMetadata & {
   price: number;
-  change_percentage?: number;
-  company?: string;
-  logo?: string;
-}
+  change_percentage: number;
+};
 
 export type Stocks = Stock[];
+
+export interface StockMetadata {
+  ticker: string;
+  name: string;
+  logo?: string;
+  company: string;
+}
+
+export type StocksMetadata = StockMetadata[];
 
 export type StockCategory = "gainers" | "trending" | "popular";
 
 export interface StockSection {
   title: string;
   category: StockCategory;
+  disabled?: boolean;
 }
 
 export type StockSections = StockSection[];
@@ -29,7 +36,7 @@ export type Portfolio = WeightedStocks;
 export type Weights = Record<string, number>;
 
 export interface PortfolioMetadata {
-  id: number;
+  id: string;
   name: string;
   lastUpdated: Date;
   stocks: number;
@@ -58,3 +65,22 @@ export interface Achievement {
 }
 
 export type Achievements = Achievement[];
+
+export interface NavigationItem {
+  href: string;
+  label: string;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+  disabled?: boolean;
+}
+
+export type NavigationItems = NavigationItem[];
+
+export interface Challenge {
+  id: number;
+  completed: boolean;
+  label: string;
+}
+
+export type Challenges = Challenge[];

@@ -38,31 +38,35 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden md:ml-8 md:flex md:gap-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold ${
-                  pathname === item.href
-                    ? "bg-game-primary/10 text-game-primary"
-                    : "text-foreground hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-              >
-                <item.icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              return (
+                <Link
+                  key={item.href}
+                  href={item.disabled ? "#" : item.href}
+                  className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold ${
+                    pathname === item.href
+                      ? "bg-game-primary/10 text-game-primary"
+                      : "text-foreground hover:bg-gray-100 dark:hover:bg-gray-800"
+                  } ${item.disabled ? "!cursor-not-allowed opacity-50" : ""}`}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="hidden md:flex md:items-center md:gap-4">
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 <Badge label={`Level ${level}`} color="purple" />
+
                 <Button
-                  variant="outline"
+                  variant="default"
+                  disabled
                   onClick={async () => await authClient.signOut()}
                 >
-                  Log out
+                  My Account
                 </Button>
               </div>
             ) : (
@@ -82,12 +86,6 @@ export default function Navbar() {
             {isLoggedIn ? (
               <div className="flex items-center gap-4">
                 <Badge label={`Level ${level}`} color="purple" />
-                <Button
-                  variant="outline"
-                  onClick={async () => await authClient.signOut()}
-                >
-                  Log out
-                </Button>
               </div>
             ) : (
               <Button asChild>
@@ -133,6 +131,23 @@ export default function Navbar() {
                   {item.label}
                 </Link>
               ))}
+
+              <div className="grid grid-cols-2 gap-4">
+                <Button
+                  variant="outline"
+                  onClick={async () => await authClient.signOut()}
+                >
+                  Log out
+                </Button>
+
+                <Button
+                  variant="default"
+                  disabled
+                  onClick={async () => await authClient.signOut()}
+                >
+                  My Account
+                </Button>
+              </div>
             </div>
           </div>
         )}

@@ -1,10 +1,15 @@
 import { Home, Bookmark, Award } from "lucide-react";
-import type { StockSections } from "./types";
+import type {
+  Challenges,
+  NavigationItems,
+  StockSections,
+  StocksMetadata,
+} from "./types";
 
-export const navItems = [
+export const navItems: NavigationItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/saved-portfolios", label: "Saved Portfolios", icon: Bookmark },
-  { href: "/achievements", label: "Achievements", icon: Award },
+  { href: "/achievements", label: "Achievements", icon: Award, disabled: true },
 ];
 
 export const stockSections: StockSections = [
@@ -13,48 +18,60 @@ export const stockSections: StockSections = [
     category: "popular",
   },
   {
-    title: "Trending",
-    category: "trending",
-  },
-  {
     title: "Gainers and Losers",
     category: "gainers",
+    disabled: true,
   },
 ];
 
-export const mockChallenges = [
+export const challenges: Challenges = [
   {
+    id: 1,
     completed: true,
     label: "Add 5 stocks",
   },
   {
+    id: 2,
     completed: false,
     label: "Balance to 100%",
   },
   {
+    id: 3,
     completed: false,
     label: "Run a backtest",
   },
 ];
 
-export const mockSavedPortfolios = [
+export const popularStocks: StocksMetadata = [
   {
-    id: 1,
-    name: "Growth Portfolio",
-    stocks: 8,
-    lastUpdated: new Date("2023-03-06"),
+    ticker: "AAPL",
+    name: "Apple Inc.",
+    company: "Apple Inc.",
   },
   {
-    id: 2,
-    name: "Dividend Portfolio",
-    stocks: 5,
-    lastUpdated: new Date("2023-03-01"),
+    ticker: "MSFT",
+    name: "Microsoft Corporation",
+    company: "Microsoft Corporation",
   },
   {
-    id: 3,
-    name: "Tech Stocks",
-    stocks: 6,
-    lastUpdated: new Date("2023-02-28"),
+    ticker: "AMZN",
+    name: "Amazon.com Inc.",
+    company: "Amazon.com Inc.",
+  },
+  {
+    ticker: "GOOGL",
+    name: "Alphabet Inc.",
+    company: "Alphabet Inc.",
+  },
+  {
+    ticker: "TSLA",
+    name: "Tesla Inc.",
+    company: "Tesla Inc.",
+  },
+  {
+    ticker: "META",
+    name: "Meta Platforms Inc.",
+    company: "Meta Platforms Inc.",
   },
 ];
 

@@ -36,41 +36,42 @@ export default function SavePortfolioDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogHeader>
-        <DialogTitle>Save Portfolio</DialogTitle>
-      </DialogHeader>
-
       <DialogContent>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setPortfolioName("");
-            onOpenChange(false);
-          }}
-        >
-          Cancel
-        </Button>
+        <DialogHeader>
+          <DialogTitle>Save Portfolio</DialogTitle>
+        </DialogHeader>
 
-        <Input
-          value={portfolioName}
-          onChange={(e) => setPortfolioName(e.target.value)}
-          placeholder="Enter portfolio name"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSave();
-          }}
-        />
+        <div className="flex flex-col gap-4 py-4">
+          <Input
+            value={portfolioName}
+            onChange={(e) => setPortfolioName(e.target.value)}
+            placeholder="Enter portfolio name"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSave();
+            }}
+          />
+        </div>
+
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setPortfolioName("");
+              onOpenChange(false);
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSave}
+            disabled={!portfolioName.trim()}
+            className="game-button game-button-primary"
+          >
+            <Check className="mr-2 h-4 w-4" />
+            Save Portfolio
+          </Button>
+        </DialogFooter>
       </DialogContent>
-
-      <DialogFooter>
-        <Button
-          onClick={handleSave}
-          disabled={!portfolioName.trim()}
-          className="game-button game-button-primary"
-        >
-          <Check className="mr-2 h-4 w-4" />
-          Save Portfolio
-        </Button>
-      </DialogFooter>
     </Dialog>
   );
 }
