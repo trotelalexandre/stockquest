@@ -18,7 +18,7 @@ interface PortfolioContextType {
   addToPortfolio: (stock: Stock) => void;
   removeFromPortfolio: (ticker: string) => void;
   updateWeight: (ticker: string, weight: number) => void;
-  savePortfolio: () => void;
+  savePortfolio: (portfolioName: string) => void;
   unsavePortfolio: () => void;
   runBacktest: () => void;
   applyEqualAllocation: () => void;
@@ -109,20 +109,24 @@ export function PortfolioProvider({ children }: PortfolioProviderProps) {
     [isSaved],
   );
 
-  const savePortfolio = useCallback(() => {
-    // TODO: Save the portfolio to the user's account
-    setIsSaving(true);
+  const savePortfolio = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (portfolioName: string) => {
+      // TODO: Save the portfolio to the user's account
+      setIsSaving(true);
 
-    // simulate API call
-    setTimeout(() => {
-      setIsSaved(true);
-      setIsSaving(false);
+      // simulate API call
+      setTimeout(() => {
+        setIsSaved(true);
+        setIsSaving(false);
 
-      // show confetti and award XP
-      handleSetShowConfetti(true);
-      awardXP(50);
-    }, 1000);
-  }, [awardXP, handleSetShowConfetti]);
+        // show confetti and award XP
+        handleSetShowConfetti(true);
+        awardXP(50);
+      }, 1000);
+    },
+    [awardXP, handleSetShowConfetti],
+  );
 
   const unsavePortfolio = useCallback(() => {
     // TODO: Unsave the portfolio to the user's account

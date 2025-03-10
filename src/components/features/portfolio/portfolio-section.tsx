@@ -11,6 +11,7 @@ import PortfolioWeight from "./cards/portfolio-weight";
 import Challenges from "./cards/challenges";
 import PortfolioChartCard from "./cards/portfolio-chart";
 import AdjustWeights from "./cards/adjust-weights";
+import SavePortfolioDialog from "./save-portfolio-dialog";
 
 export default function PortfolioSection() {
   const {
@@ -31,6 +32,7 @@ export default function PortfolioSection() {
   } = usePortfolio();
 
   const [backtestOpen, setBacktestOpen] = useState(false);
+  const [saveOpen, setSaveOpen] = useState(false);
 
   const handleBacktest = () => {
     runBacktest();
@@ -55,7 +57,7 @@ export default function PortfolioSection() {
             </Button>
           ) : (
             <Button
-              onClick={savePortfolio}
+              onClick={() => setSaveOpen(true)}
               disabled={isSaving || !isValidPortfolio}
               className="game-button game-button-primary"
             >
@@ -129,7 +131,7 @@ export default function PortfolioSection() {
           </Button>
         ) : (
           <Button
-            onClick={savePortfolio}
+            onClick={() => setSaveOpen(true)}
             disabled={isSaving || !isValidPortfolio}
             className="game-button game-button-primary"
           >
@@ -155,6 +157,7 @@ export default function PortfolioSection() {
       </div>
 
       <BacktestDialog open={backtestOpen} onOpenChange={setBacktestOpen} />
+      <SavePortfolioDialog open={saveOpen} onOpenChange={setSaveOpen} />
     </div>
   );
 }
