@@ -69,7 +69,7 @@ export default function NotificationBanner() {
 
   return (
     <div className="bg-background fixed right-0 bottom-0 left-0 z-50 border-t p-4 shadow-lg md:hidden">
-      <div className="container mx-auto flex flex-wrap items-center justify-center gap-4">
+      <div className="mx-auto flex flex-wrap items-center justify-center gap-4">
         {!isStandalone && (
           <Button
             size="sm"
