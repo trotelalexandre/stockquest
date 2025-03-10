@@ -11,7 +11,7 @@ export interface Stock {
 
 export type Stocks = Stock[];
 
-export type StockCategory = "gainers" | "new" | "trending";
+export type StockCategory = "gainers" | "trending" | "popular";
 
 export interface StockSection {
   title: string;

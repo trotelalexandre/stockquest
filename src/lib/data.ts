@@ -9,6 +9,14 @@ export const navItems = [
 
 export const stockSections: StockSections = [
   {
+    title: "Popular",
+    category: "popular",
+  },
+  {
+    title: "Trending",
+    category: "trending",
+  },
+  {
     title: "Gainers and Losers",
     category: "gainers",
   },

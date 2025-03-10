@@ -11,28 +11,21 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function SignupPage() {
+export default function SigninPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [username, setUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
 
     setIsLoading(true);
 
-    const { error } = await authClient.signUp.email({
+    const { error } = await authClient.signIn.email({
       email,
       password,
-      name: username,
       callbackURL: "/",
     });
 
@@ -57,31 +50,14 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <h1 className="text-foreground text-2xl font-bold">
-              Join StockQuest
-            </h1>
+            <h1 className="text-foreground text-2xl font-bold">Sign In</h1>
 
             <p className="text-muted-foreground mt-2 text-sm">
-              Create an account to start your investment journey
+              Sign in to your account to continue
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="username" className="text-foreground font-medium">
-                Username
-              </Label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="Your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                className="game-input"
-              />
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="email" className="text-foreground font-medium">
                 Email
@@ -112,40 +88,22 @@ export default function SignupPage() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="confirm-password"
-                className="text-foreground font-medium"
-              >
-                Confirm Password
-              </Label>
-              <Input
-                id="confirm-password"
-                type="password"
-                value={confirmPassword}
-                placeholder="•••••••••••••••"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="game-input"
-              />
-            </div>
-
             <Button
               type="submit"
               disabled={isLoading}
               className="game-button game-button-primary w-full"
             >
-              {isLoading ? "Creating Account..." : "Create Account"}
+              {isLoading ? "Signing in..." : "Sign In"}
             </Button>
 
             <div className="text-muted-foreground text-center text-sm">
-              Already have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
-                href="/signin"
+                href="/signup"
                 type="button"
                 className="text-game-blue cursor-pointer font-semibold hover:underline"
               >
-                Log in
+                Sign Up
               </Link>
             </div>
           </form>

@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { LogIn, TrendingUp, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import LoginDialog from "../features/auth/login-dialog";
 import Badge from "../ui/game-badge";
 import { navItems } from "@/lib/data";
 import { useAchievements } from "@/providers/achievements-provider";
@@ -25,7 +24,6 @@ export default function Navbar() {
   }, [session]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginOpen, setLoginOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -68,12 +66,14 @@ export default function Navbar() {
                 </Button>
               </div>
             ) : (
-              <Button
-                onClick={() => setLoginOpen(true)}
-                className="game-button game-button-primary"
-              >
-                <LogIn className="mr-2 h-4 w-4" />
-                Login
+              <Button asChild>
+                <Link
+                  href="/signin"
+                  className="game-button game-button-primary"
+                >
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Login
+                </Link>
               </Button>
             )}
           </div>
@@ -90,12 +90,14 @@ export default function Navbar() {
                 </Button>
               </div>
             ) : (
-              <Button
-                onClick={() => setLoginOpen(true)}
-                className="game-button game-button-primary"
-              >
-                <LogIn className="mr-2 h-4 w-4" />
-                Login
+              <Button asChild>
+                <Link
+                  href="/signin"
+                  className="game-button game-button-primary"
+                >
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Login
+                </Link>
               </Button>
             )}
 
@@ -135,8 +137,6 @@ export default function Navbar() {
           </div>
         )}
       </div>
-
-      <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
     </header>
   );
 }
