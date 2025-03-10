@@ -1,11 +1,11 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TrendingUp } from "lucide-react";
+import { Key, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -15,21 +15,33 @@ export default function SigninPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasskeyLoading, setIsPasskeyLoading] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (
+      !PublicKeyCredential.isConditionalMediationAvailable ||
+      !PublicKeyCredential.isConditionalMediationAvailable()
+    ) {
+      return;
+    }
+
+    void authClient.signIn.passkey({ autoFill: true });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     setIsLoading(true);
 
-    const { error } = await authClient.signIn.email({
+    const data = await authClient.signIn.email({
       email,
       password,
       callbackURL: "/",
     });
 
-    if (error) {
+    if (data?.error) {
       toast.error("An error occurred. Please try again later.");
       setIsLoading(false);
       return;
@@ -39,10 +51,30 @@ export default function SigninPage() {
     router.push("/");
   };
 
+  const handlePasskeySignIn = async () => {
+    setIsPasskeyLoading(true);
+
+    try {
+      const data = await authClient.signIn.passkey();
+
+      if (data?.error) {
+        toast.error("An error occurred. Please try again later.");
+        setIsPasskeyLoading(false);
+        return;
+      }
+
+      setIsPasskeyLoading(false);
+      router.push("/");
+    } catch {
+      toast.error("An error occurred. Please try again later.");
+      setIsPasskeyLoading(false);
+    }
+  };
+
   return (
     <>
-      <div className="flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md space-y-8 rounded-xl border-2 border-gray-200 bg-white p-6">
+      <div className="flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="bg-card w-full max-w-md space-y-8 rounded-xl border-2 p-6">
           <div className="text-center">
             <div className="mb-4 flex justify-center">
               <div className="from-game-primary flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-b to-[#388E3C]">
@@ -70,6 +102,7 @@ export default function SigninPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="game-input"
+                autoComplete="email webauthn"
               />
             </div>
 
@@ -85,15 +118,38 @@ export default function SigninPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="game-input"
+                autoComplete="current-password webauthn"
               />
             </div>
 
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || isPasskeyLoading}
               className="game-button game-button-primary w-full"
             >
               {isLoading ? "Signing in..." : "Sign In"}
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="text-muted-foreground bg-card px-2">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isLoading || isPasskeyLoading}
+              onClick={handlePasskeySignIn}
+              className="w-full"
+            >
+              <Key className="mr-2 h-4 w-4" />
+              {isPasskeyLoading ? "Signing in..." : "Sign In with Passkey"}
             </Button>
 
             <div className="text-muted-foreground text-center text-sm">
